@@ -65,5 +65,9 @@ int main(void) {
 
     afficher_classe_sans_pointeur(TM2);
 
+    puts("/*----------------------------------------------------------------*/");
+
+    printf("sizeof(classe) = %lu\n", sizeof(classe));
+    printf("sizeof(personne) = %lu\n", sizeof(personne));
     return 0;
 }

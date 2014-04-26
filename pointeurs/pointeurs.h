@@ -1,18 +1,18 @@
 #include <stdio.h>  // printf
-#include <string.h> //strcpy
+#include <string.h> // strcpy, strcmp
 
 #define MAXETUDIANTS 25
 #define MAXCHAR 10
 #define TAILLE(X) (int)(sizeof(X)/sizeof(X[0]))
 
 typedef struct {
-    int num;
-    char prenom[MAXCHAR];
+    char    prenom[MAXCHAR];
+    int     num;
 } personne;
 
 typedef struct {
-    int nb;
-    personne etudiants[MAXETUDIANTS];
+    personne   etudiants[MAXETUDIANTS];
+    int        nb;
 } classe;
 
 int mon_strcmp(char *, char *);
