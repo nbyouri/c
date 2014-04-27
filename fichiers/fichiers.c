@@ -4,13 +4,14 @@
 
 // constantes
 #define CSV "C'est pas sorcier.csv"
-#define N_MAX_E 1000
+#define N_MAX_E 450      
 #define N_MAX_CAR 2000
 #define N_MAX_SD 7
 #define N_MAX_TH 10
 #define N_MAX_CAR_THEME 32
 #define N_MAX_CAR_SD 32
 #define N_MAX_CAR_TITRE 80
+#define TAILLE(X) (int)(sizeof(X)/sizeof(X[0]))
 
 // type C_CPS contenant le titre, le numero, 
 // le theme, le sous theme et l'annee
@@ -47,7 +48,7 @@ typedef struct {
 static T_Tab_Theme themes;
 
 // declaration de fonctions
-void charger_cps(T_Tab_CPS *, T_Tab_Theme *);
+void charger_cps(T_Tab_CPS *);
 void lecture_cps(T_Tab_CPS *);
 int  trouveTheme(T_Tab_Theme *, char[]);
 int  trouveSD(T_Tab_Theme *, int, char[]);
@@ -61,7 +62,7 @@ void lire_binaire(T_Tab_CPS *);
 // c'est ici que tout ce passe...
 int main(void) {
     T_Tab_CPS cps;
-    charger_cps(&cps, &themes); // si on sauvegarde..
+    // charger_cps(&cps); // si on sauvegarde..
 
     // tri qsort par numeros
     //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_num);
@@ -73,26 +74,26 @@ int main(void) {
     //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_themes_sousthemes);
 
     // tri par annee puis theme puis sous theme puis titre
-    qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_annee_themes_sousthemes);
+    //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_annee_themes_sousthemes);
     //  f(base a trier (toujours un pointeur!), entier non signe, 
     //  taille d'un element de la base, fonction de comparaison retournant un entier et 
     //  avec deux pointeurs comme argument
 
 
     // on enregistre dans un fichier text
-    //sauvegarder(&cps);
+    // sauvegarder(&cps);
 
     // chargement avec lecture fichier binaire
-    //lire_binaire(&cps);
+    lire_binaire(&cps);
 
     // on affiche le resultat
-    lecture_cps(&cps);
+    //lecture_cps(&cps);
 
     return 0;
 }
 
 // charge en memoire les differentes parties du fichier separees par ";"
-void charger_cps(T_Tab_CPS * cps, T_Tab_Theme * theme) {
+void charger_cps(T_Tab_CPS * cps) {
     FILE *f;           
     int th;
     int sd;                                     
@@ -104,9 +105,9 @@ void charger_cps(T_Tab_CPS * cps, T_Tab_Theme * theme) {
         strcpy(cps->tab[cps->nb].titre, strtok(s, ";"));    // titre
         cps->tab[cps->nb].num = atoi(strtok(NULL, ";"));    // numero
         strtok(NULL, ";"); // on ne veut pas du synopsis    // synopsis
-        th = trouveTheme(theme,strtok(NULL,";"));           // theme
+        th = trouveTheme(&themes,strtok(NULL,";"));           // theme
         cps->tab[cps->nb].th = th;
-        sd = trouveSD(theme,th,strtok(NULL,";"));           // sous theme
+        sd = trouveSD(&themes,th,strtok(NULL,";"));           // sous theme
         cps->tab[cps->nb].sd = sd;
         cps->tab[cps->nb].ann = atoi(strtok(NULL, ";"));    // annee
         cps->nb++;
@@ -253,23 +254,21 @@ void sauvegarder(T_Tab_CPS * cps) {
 
 void lire_binaire(T_Tab_CPS * cps) {
     int i = 0;
-    cps->nb = 0;
     FILE *f;
     FILE *f2;
     if ((f = fopen("cps.bin", "rb")) == NULL)
         exit(EXIT_FAILURE);
-    fread(&cps->tab, sizeof(cps->tab), 1, f);
+    fread(cps->tab, sizeof(cps->tab), 1, f);
     if ((f2 = fopen("themes.bin", "rb")) == NULL)
-        exit(EXIT_FAILURE);
-    fread(&themes.tab, sizeof(themes.tab), 1, f2);
+       exit(EXIT_FAILURE);
+    fread(themes.tab, sizeof(themes.tab), 1, f2);
     printf("      %-80s %-8s%-8s%-32s %5s\n%s%s\n", "titre", "num", "annee", "theme", "sous-theme",
             "-------------------------------------------------------------------------------------------",
             "----------------------------------------------------------------------------------");
-    for (i = 0; i < 450; i++) 
+    for (i = 0; i < TAILLE(cps->tab); i++) 
         printf("%03d : %-80s %-8d%-8d%-32s %5s\n", i,
                 cps->tab[i].titre, cps->tab[i].num, cps->tab[i].ann,
                 themes.tab[cps->tab[i].th].nom, themes.tab[cps->tab[i].th].tabSD[cps->tab[i].sd]);
     fclose(f);
     fclose(f2);
 }
-
