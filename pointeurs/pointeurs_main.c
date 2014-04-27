@@ -68,6 +68,9 @@ int main(void) {
     puts("/*----------------------------------------------------------------*/");
 
     printf("sizeof(classe) = %lu\n", sizeof(classe));
+    printf("sizeof(TM2) = %lu\n", sizeof(TM2));
     printf("sizeof(personne) = %lu\n", sizeof(personne));
+    printf("sizeof(classe.etudiants) = %lu\n", sizeof(TM1.etudiants));
+    printf("sizeof(classe.nb) = %lu\n", sizeof(TM1.nb));
     return 0;
 }

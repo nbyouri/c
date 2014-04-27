@@ -2,7 +2,7 @@
 #include <string.h> // strcpy, strcmp
 
 #define MAXETUDIANTS 25
-#define MAXCHAR 10
+#define MAXCHAR 12
 #define TAILLE(X) (int)(sizeof(X)/sizeof(X[0]))
 
 typedef struct {
@@ -11,10 +11,10 @@ typedef struct {
 } personne;
 
 typedef struct {
-    personne   etudiants[MAXETUDIANTS];
-    int        nb;
+	int      nb;
+    personne etudiants[MAXETUDIANTS];
 } classe;
 
 int mon_strcmp(char *, char *);
 void afficher_classe(classe *);
-void afficher_classe_sans_pointeur(classe);
+void afficher_classe_sans_pointeur(classe TM2);
