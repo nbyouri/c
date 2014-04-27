@@ -14,7 +14,7 @@ int main(void) {
 
     int mat = 2;
     char nom[] = "marine";
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < (sizeof(tab)/sizeof(tab[0])); i++) {
         if (mat == tab[i].matri)
             printf("1) Matricule %d = Etudiant nr.%d\n { %s, %d },\n", 
                     mat, i+1, tab[i].nom, tab[i].matri);
