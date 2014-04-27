@@ -57,17 +57,11 @@ int  comp_themes_sousthemes(const void *, const void *);
 int  comp_annee_themes_sousthemes(const void *, const void *);
 void sauvegarder(T_Tab_CPS *);
 void lire_binaire(T_Tab_CPS *);
-//int  comp_num(int, int);
-//void echange_structure(T_CPS *, T_CPS *);
-//void tri_num(T_Tab_CPS *);
 
 // c'est ici que tout ce passe...
 int main(void) {
     T_Tab_CPS cps;
     charger_cps(&cps, &themes); // si on sauvegarde..
-
-    // tri manuel
-    //tri_num(&cps);
 
     // tri qsort par numeros
     //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_num);
@@ -110,9 +104,9 @@ void charger_cps(T_Tab_CPS * cps, T_Tab_Theme * theme) {
         strcpy(cps->tab[cps->nb].titre, strtok(s, ";"));    // titre
         cps->tab[cps->nb].num = atoi(strtok(NULL, ";"));    // numero
         strtok(NULL, ";"); // on ne veut pas du synopsis    // synopsis
-        th = trouveTheme(theme,strtok(NULL,";"));          // theme
+        th = trouveTheme(theme,strtok(NULL,";"));           // theme
         cps->tab[cps->nb].th = th;
-        sd = trouveSD(theme,th,strtok(NULL,";"));          // sous theme
+        sd = trouveSD(theme,th,strtok(NULL,";"));           // sous theme
         cps->tab[cps->nb].sd = sd;
         cps->tab[cps->nb].ann = atoi(strtok(NULL, ";"));    // annee
         cps->nb++;
@@ -279,33 +273,3 @@ void lire_binaire(T_Tab_CPS * cps) {
     fclose(f2);
 }
 
-/*
-
-   Ces fonctions sont utilisees pour le tri manuel. 
-
-*/
-/*
-   int comp_num(int a, int b) {
-   return a-b;
-   }
-
-   void echange_structure(T_CPS * st1, T_CPS * st2) {
-   T_CPS temp = *st1;
- *st1 = *st2;
- *st2 = temp;
- }
-
- void tri_num(T_Tab_CPS * cps) {
- int i = 0;
- int j = 0;
- int mini = 0;
- for (i = 0; i < cps->nb - 1; i++) {
- mini = i;
- for (j = i + 1; j < cps->nb; j++) {
- if (comp_num(cps->tab[mini].num, cps->tab[j].num) > 0)
- mini = j;
- }
- if (mini != i) echange_structure(&cps->tab[i], &cps->tab[mini]);
- }
- }
- */
