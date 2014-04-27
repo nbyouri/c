@@ -15,10 +15,10 @@ typedef struct {
 } TpTfes;
 
 static TpTfes T_travaux[maxTfes] = {
-    { 1, { "bcdef", 2 }},
-    { 2, { "arst", 4 }}, 
-    { 3, { "xcfd", 4 }},
-    { 4, { "harst", 1 }},
+    { .nbTfes = 1, { .titre = "bcdef", .categorie = 2 }},
+    { .nbTfes = 2, { .titre = "arst", .categorie = 4 }}, 
+    { .nbTfes = 3, { .titre = "xcfd", .categorie = 4 }},
+    { .nbTfes = 4, { .titre = "harst", .categorie = 1 }},
 };
 
 int fcomp_categories(const void *, const void *);
