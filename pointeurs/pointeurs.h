@@ -11,7 +11,7 @@ typedef struct {
 } personne;
 
 typedef struct {
-	int      nb;
+    int      nb;
     personne etudiants[MAXETUDIANTS];
 } classe;
 
