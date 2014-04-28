@@ -22,16 +22,14 @@ void swap(int * a, int * b) {
 void tri(int t[]) {
     for (int i = 0; i < BUF; i++) {
         for (int j = 0; j < BUF-1; j++) {
-            if (cmp(t[j], t[j+1]) > 0) {
+            if (cmp(t[j], t[j+1]) > 0) 
                 swap(&t[j], &t[j+1]);
-            }
         }
     }
 }
 
 int main(void) {
     tri(tab);
-    for (int k = 0; k < BUF; k++) {
+    for (int k = 0; k < BUF; k++) 
         printf("%d\n", tab[k]);
-    }
 }
