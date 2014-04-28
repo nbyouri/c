@@ -19,7 +19,7 @@ void swap(int * a, int * b) {
     *b = te;
 }
 
-void tri(int t[]) {
+void tri(int *t) {
     for (int i = 0; i < BUF; i++) {
         for (int j = 0; j < BUF-1; j++) {
             if (cmp(t[j], t[j+1]) > 0) 
