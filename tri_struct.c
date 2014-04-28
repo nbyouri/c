@@ -60,7 +60,7 @@ void trier(TpTfes * trav) {
 int main(void) {
     //qsort(T_travaux, sizeof(T_travaux)/sizeof(TpTfes), sizeof(T_travaux[0]), fcomp_titres);
     trier(T_travaux);
-    for (int n = 0; n < maxTfes; n++) {
+    for (int n = 0; n < (sizeof(T_travaux)/sizeof(T_travaux[0])); n++) {
         printf("travaux[%d] \n\t{ %d, { %s, %d }},\n", n, T_travaux[n].nbTfes, 
                 T_travaux[n].tbTfes.titre, T_travaux[n].tbTfes.categorie);
     }

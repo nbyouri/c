@@ -13,16 +13,15 @@ int cmp(int a, int b) {
 }
 
 void swap(int * a, int * b) {
-    int t;
-    t = *a;
+    int  te;
+    te = *a;
     *a = *b;
-    *b = t;
+    *b = te;
 }
 
 void tri(int t[]) {
-    int i, j;
-    for (i = 0; i < BUF; i++) {
-        for (j = 0; j < BUF-1; j++) {
+    for (int i = 0; i < BUF; i++) {
+        for (int j = 0; j < BUF-1; j++) {
             if (cmp(t[j], t[j+1]) > 0) {
                 swap(&t[j], &t[j+1]);
             }
@@ -31,9 +30,8 @@ void tri(int t[]) {
 }
 
 int main(void) {
-    int k = 0;
     tri(tab);
-    for (k = 0; k < BUF; k++) {
+    for (int k = 0; k < BUF; k++) {
         printf("%d\n", tab[k]);
     }
 }
