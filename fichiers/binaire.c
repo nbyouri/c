@@ -1,13 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdio.h>		//printf, fprintf, fopen, fclose, fgets, fread, fwrite
+#include <stdlib.h>		//exit, atoi
+#include <string.h>		//strcpy, strtok
 
 #define FICHIER_BINAIRE "riding.bin"
 #define FICHIER_TEXTE "riding.txt"
 #define MAX_CHEVAUX 100
 #define MAX_CAR 1000
 #define TAILLE(X) (int)(sizeof(X)/sizeof(X[0]))
-
+	
 typedef struct {
 	char discipline[MAX_CAR];
 	char couleur[MAX_CAR];
