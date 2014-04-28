@@ -1,20 +1,39 @@
 #include <stdio.h>
 
-#define BUF 3
+#define BUF 5
 
-int main(void) {
-    int array[BUF] = { 0, 3, 2 };
-    int temp, i, j, k;
+int  cmp(int, int);
+void swap(int *, int *);
+void tri(int *);
+
+static int tab[BUF] = { 0, 3, 2, -2, 9};
+
+int cmp(int a, int b) {
+    return a - b;
+}
+
+void swap(int * a, int * b) {
+    int t;
+    t = *a;
+    *a = *b;
+    *b = t;
+}
+
+void tri(int t[]) {
+    int i, j;
     for (i = 0; i < BUF; i++) {
         for (j = 0; j < BUF-1; j++) {
-            if (array[j] > array[j+1]) {
-                temp = array[j];
-                array[j] = array[j+1];
-                array[j+1] = temp;
+            if (cmp(t[j], t[j+1]) > 0) {
+                swap(&t[j], &t[j+1]);
             }
         }
     }
+}
+
+int main(void) {
+    int k = 0;
+    tri(tab);
     for (k = 0; k < BUF; k++) {
-        printf("%d\n", array[k]);
+        printf("%d\n", tab[k]);
     }
 }
