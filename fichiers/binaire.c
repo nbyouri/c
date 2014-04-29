@@ -131,6 +131,6 @@ void lire_ligne(type_manege * manege) {
                 manege->chevaux->taille);
         fread(&manege->chevaux, sizeof(type_cheval), 1, bdd);
     }
-    //printf("%d\n", nb); //nombre de lignes
+    // printf("%d\n", nb); //nombre de lignes
     fclose(bdd);
 }

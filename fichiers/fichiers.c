@@ -74,19 +74,19 @@ int main(void) {
     //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_themes_sousthemes);
 
     // tri par annee puis theme puis sous theme puis titre
-    qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_annee_themes_sousthemes);
+    //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_annee_themes_sousthemes);
     //  f(base a trier (toujours un pointeur!), entier non signe, 
     //  taille d'un element de la base, fonction de comparaison retournant un entier et 
     //  avec deux pointeurs comme argument
 
     // on enregistre dans un fichier text
-    // sauvegarder(&cps);
+    sauvegarder(&cps);
 
     // chargement avec lecture fichier binaire
     //lire_binaire(&cps);
 
     // on affiche le resultat
-    lecture_cps(&cps);
+    //lecture_cps(&cps);
 
     return 0;
 }
@@ -165,8 +165,8 @@ int comp_titres(const void *a, const void *b) {
 }
 
 int comp_themes_sousthemes(const void *a, const void *b) {
-    T_CPS * p1 = (T_CPS *) a;
-    T_CPS * p2 = (T_CPS *) b;
+    T_CPS * p1 = (T_CPS *)a;
+    T_CPS * p2 = (T_CPS *)b;
     char s1[N_MAX_CAR_THEME+N_MAX_CAR_SD+N_MAX_CAR_TITRE];
     char s2[N_MAX_CAR_THEME+N_MAX_CAR_SD+N_MAX_CAR_TITRE];
     strcpy(s1, themes.tab[p1->th].nom);          // le theme

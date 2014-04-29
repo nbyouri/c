@@ -33,8 +33,11 @@ typedef struct {
 } classe;
 
 // declarations de fonctions
-int  lire_fichier(void);
-int  ecrire_fichier(classe *);
+int  lire_fichier_texte(void);
+void charger_fichier_binaire(classe *);
+int  ecrire_fichier_texte(classe *);
+void ecrire_fichier_binaire(classe *);
+void lire_fichier_binaire(classe *);
 void echange_structure(etudiant *, etudiant *);
 int  comp_moyenne(float, float);
 void trier_par_moyenne(classe *);
@@ -101,12 +104,13 @@ void menu_principal(classe classe_1) {
                 puts("\n");
                 break;
             case 6 : 
-                ecrire_fichier(&classe_1);
+                //ecrire_fichier_texte(&classe_1);
+                ecrire_fichier_binaire(&classe_1);
                 break;
             case 0 : 
                 printf("Lire fichier? (o/n) : ");
                 scanf("%s", lire);
-                if (strcmp(lire, "o") == 0) lire_fichier();
+                if (strcmp(lire, "o") == 0) lire_fichier_binaire(&classe_1);
                 rester = false;
                 break;
             default: 
@@ -115,7 +119,36 @@ void menu_principal(classe classe_1) {
     }
 }
 
-int lire_fichier(void) {
+void charger_fichier_binaire(classe * classe) {
+    FILE *f;
+    if ((f = fopen("classe.bin", "rb")) == NULL)
+        exit(EXIT_FAILURE);
+    fread(classe->etudiants, sizeof(classe->etudiants), 1, f);
+    fclose(f);
+}
+
+void lire_fichier_binaire(classe * classe) {
+    FILE *f;
+    if ((f = fopen("classe.bin", "rb")) == NULL)
+        exit(EXIT_FAILURE);
+    fread(&classe->etudiants, sizeof(etudiant), 1, f);
+    while (!feof(f)) {
+            printf("Matricule = %d :: Nom = %s\n", classe->etudiants->matr, classe->etudiants->nom);
+        for (i = 0; i < NB_COTES; i++) printf("Cote nr. %d = %f\n", i+1, classe->etudiants->cotes[i]);
+        fread(&classe->etudiants, sizeof(etudiant), 1, f);
+    }
+    fclose(f);
+}
+
+void ecrire_fichier_binaire(classe * classe) {
+    FILE *f;
+    if ((f = fopen("classe.bin", "wb")) == NULL)
+        exit(EXIT_FAILURE);
+    fwrite(classe->etudiants, sizeof(classe->etudiants), 1, f);
+    fclose(f);
+}
+
+int lire_fichier_texte(void) {
     // lire le fichier de la classe
     FILE *fp;
     char s[100];
@@ -129,7 +162,7 @@ int lire_fichier(void) {
     return 0;
 }
 
-int ecrire_fichier(classe * classe) {
+int ecrire_fichier_texte(classe * classe) {
     // on ecrit les donnees de la classe sur un fichier
     FILE *fp;
     if ((fp =  fopen(FICHIER, "w")) == NULL) 
