@@ -62,7 +62,7 @@ void lire_binaire(T_Tab_CPS *);
 // c'est ici que tout ce passe...
 int main(void) {
     T_Tab_CPS cps;
-    // charger_cps(&cps); // si on sauvegarde..
+    charger_cps(&cps); // si on sauvegarde..
 
     // tri qsort par numeros
     //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_num);
@@ -74,7 +74,7 @@ int main(void) {
     //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_themes_sousthemes);
 
     // tri par annee puis theme puis sous theme puis titre
-    //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_annee_themes_sousthemes);
+    qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_annee_themes_sousthemes);
     //  f(base a trier (toujours un pointeur!), entier non signe, 
     //  taille d'un element de la base, fonction de comparaison retournant un entier et 
     //  avec deux pointeurs comme argument
@@ -84,10 +84,10 @@ int main(void) {
     // sauvegarder(&cps);
 
     // chargement avec lecture fichier binaire
-    lire_binaire(&cps);
+    //lire_binaire(&cps);
 
     // on affiche le resultat
-    //lecture_cps(&cps);
+    lecture_cps(&cps);
 
     return 0;
 }
@@ -95,8 +95,7 @@ int main(void) {
 // charge en memoire les differentes parties du fichier separees par ";"
 void charger_cps(T_Tab_CPS * cps) {
     FILE *f;           
-    int th;
-    int sd;                                     
+    int th, sd;                                     
     char s[N_MAX_CAR];                                      // chaine de caracteres
     if ((f = fopen(CSV, "rt")) == NULL)                     // si le fichier existe pas,
         exit(EXIT_FAILURE);                                 // on se casse 
@@ -129,28 +128,26 @@ void lecture_cps(T_Tab_CPS * cps) {
 }
 
 int trouveSD(T_Tab_Theme * theme, int th, char sd[N_MAX_CAR_SD]){
-    int i;
-    for (i=0;i<theme->tab[th].nbSD;i++){
-        if(strcmp(theme->tab[th].tabSD[i],sd)==0){
+    int i = 0;
+    for (i = 0; i < theme->tab[th].nbSD; i++){
+        if (strcmp(theme->tab[th].tabSD[i], sd) == 0) 
             return i;
-        }
     }
-    strcpy(theme->tab[th].tabSD[theme->tab[th].nbSD],sd);
+    strcpy(theme->tab[th].tabSD[theme->tab[th].nbSD], sd);
     theme->tab[th].nbSD++;
-    return theme->tab[th].nbSD-1;
+    return theme->tab[th].nbSD - 1;
 }
 
-int trouveTheme(T_Tab_Theme * theme, char nomTh[]){
-    int i;
-    for (i=0;i<theme->nbTh;i++){
-        if (strcmp(theme->tab[i].nom,nomTh)==0){
+int trouveTheme(T_Tab_Theme * theme, char *nomTh){
+    int i = 0;
+    for (i = 0; i < theme->nbTh; i++){
+        if (strcmp(theme->tab[i].nom,nomTh) == 0)
             return i;
-        }
     }
     strcpy(theme->tab[theme->nbTh].nom,nomTh);
     theme->tab[theme->nbTh].nbSD = 0;
     theme->nbTh++;
-    return theme->nbTh-1;
+    return theme->nbTh - 1;
 
 }
 
@@ -193,12 +190,8 @@ int comp_themes_sousthemes(const void *a, const void *b) {
 
 int comp_annee_themes_sousthemes(const void *a, const void *b) {
     // variables
-    int ann1 = 0;
-    int ann2 = 0;
     T_CPS * p1 = (T_CPS *)a;
     T_CPS * p2 = (T_CPS *)b;
-    ann1 = p1->ann;
-    ann2 = p2->ann;
     char th1[N_MAX_CAR_THEME];
     char th2[N_MAX_CAR_THEME];
     char sd1[N_MAX_CAR_SD];
@@ -213,12 +206,12 @@ int comp_annee_themes_sousthemes(const void *a, const void *b) {
     strcpy(sd2, themes.tab[p2->th].tabSD[p2->sd]);
 
     // on met tout ensemble dans deux chaines de caracteres a comparer
-    sprintf(s1, "%d", ann1);        // on met l'annee en premier dans la chaine
+    sprintf(s1, "%d", p1->ann);        // on met l'annee en premier dans la chaine
     strcat(s1,th1);                 // + le theme
     strcat(s1,sd1);                 // + le sous theme
     strcat(s1,p1->titre);           // + le titre
 
-    sprintf(s2, "%d", ann2);        // idem pour la deuxieme chaine
+    sprintf(s2, "%d", p2->ann);        // idem pour la deuxieme chaine
     strcat(s2,th2);         
     strcat(s2,sd2);         
     strcat(s2,p2->titre);   
