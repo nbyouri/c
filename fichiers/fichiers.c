@@ -163,59 +163,40 @@ int comp_titres(const void *a, const void *b) {
     // comparaison des titres
     T_CPS *p1 = (T_CPS *)a;
     T_CPS *p2 = (T_CPS *)b;
-    return strcmp(p1->titre, p2->titre);
+    return strcasecmp(p1->titre, p2->titre);
 }
 
 int comp_themes_sousthemes(const void *a, const void *b) {
     T_CPS * p1 = (T_CPS *) a;
     T_CPS * p2 = (T_CPS *) b;
-    char th1[N_MAX_CAR_THEME];
-    char th2[N_MAX_CAR_THEME];
-    char sd1[N_MAX_CAR_SD];
-    char sd2[N_MAX_CAR_SD];
     char s1[N_MAX_CAR_THEME+N_MAX_CAR_SD+N_MAX_CAR_TITRE];
     char s2[N_MAX_CAR_THEME+N_MAX_CAR_SD+N_MAX_CAR_TITRE];
-    strcpy(th1, themes.tab[p1->th].nom);
-    strcpy(th2, themes.tab[p2->th].nom);
-    strcpy(sd1, themes.tab[p1->th].tabSD[p1->sd]);
-    strcpy(sd2, themes.tab[p2->th].tabSD[p2->sd]);
-    strcpy(s1,th1);         // on copie le theme dans une chaine de char
-    strcat(s1,sd1);         // on joint le theme et sous theme
-    strcat(s1,p1->titre);   // on y joint le titre
-    strcpy(s2,th2);         // idem pour 2
-    strcat(s2,sd2);         // theme+soustheme
-    strcat(s2,p2->titre);   // +titre
-    return strcmp(s1,s2);   // on compare les deux
+    strcpy(s1, themes.tab[p1->th].nom);          // le theme
+    strcat(s1, themes.tab[p1->th].tabSD[p1->sd]);// + le sous theme
+    strcat(s1, p1->titre);                       // + le titre
+    strcpy(s2, themes.tab[p2->th].nom);          // idem pour la deuxieme chaine
+    strcat(s2, themes.tab[p2->th].tabSD[p2->sd]);         
+    strcat(s2, p2->titre);   
+    return strcasecmp(s1, s2);                       // on compare
 }
 
 int comp_annee_themes_sousthemes(const void *a, const void *b) {
     // variables
     T_CPS * p1 = (T_CPS *)a;
     T_CPS * p2 = (T_CPS *)b;
-    char th1[N_MAX_CAR_THEME];
-    char th2[N_MAX_CAR_THEME];
-    char sd1[N_MAX_CAR_SD];
-    char sd2[N_MAX_CAR_SD];
     char s1[N_MAX_CAR_THEME+N_MAX_CAR_SD+N_MAX_CAR_TITRE+4];
     char s2[N_MAX_CAR_THEME+N_MAX_CAR_SD+N_MAX_CAR_TITRE+4];
 
-    // on copie les themes et sous themes
-    strcpy(th1, themes.tab[p1->th].nom);
-    strcpy(th2, themes.tab[p2->th].nom);
-    strcpy(sd1, themes.tab[p1->th].tabSD[p1->sd]);
-    strcpy(sd2, themes.tab[p2->th].tabSD[p2->sd]);
-
     // on met tout ensemble dans deux chaines de caracteres a comparer
-    sprintf(s1, "%d", p1->ann);        // on met l'annee en premier dans la chaine
-    strcat(s1,th1);                 // + le theme
-    strcat(s1,sd1);                 // + le sous theme
-    strcat(s1,p1->titre);           // + le titre
-
-    sprintf(s2, "%d", p2->ann);        // idem pour la deuxieme chaine
-    strcat(s2,th2);         
-    strcat(s2,sd2);         
-    strcat(s2,p2->titre);   
-    return strcmp(s1,s2);   
+    sprintf(s1, "%d", p1->ann);                  // on met l'annee en premier dans la chaine
+    strcat(s1, themes.tab[p1->th].nom);          // + le theme
+    strcat(s1, themes.tab[p1->th].tabSD[p1->sd]);// + le sous theme
+    strcat(s1, p1->titre);                       // + le titre
+    sprintf(s2, "%d", p2->ann);                  // idem pour la deuxieme chaine
+    strcat(s2, themes.tab[p2->th].nom);         
+    strcat(s2, themes.tab[p2->th].tabSD[p2->sd]);         
+    strcat(s2, p2->titre);   
+    return strcasecmp(s1, s2);                       // on compare
 }
 
 void sauvegarder(T_Tab_CPS * cps) {
