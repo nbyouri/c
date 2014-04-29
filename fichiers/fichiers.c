@@ -50,8 +50,8 @@ static T_Tab_Theme themes;
 // declaration de fonctions
 void charger_cps(T_Tab_CPS *);
 void lecture_cps(T_Tab_CPS *);
-int  trouveTheme(T_Tab_Theme *, char[]);
-int  trouveSD(T_Tab_Theme *, int, char[]);
+int  trouveTheme(T_Tab_Theme *, char *);
+int  trouveSD(T_Tab_Theme *, int, char *);
 int  comp_num(const void *, const void *);
 int  comp_titres(const void *, const void *);
 int  comp_themes_sousthemes(const void *, const void *);
@@ -78,7 +78,6 @@ int main(void) {
     //  f(base a trier (toujours un pointeur!), entier non signe, 
     //  taille d'un element de la base, fonction de comparaison retournant un entier et 
     //  avec deux pointeurs comme argument
-
 
     // on enregistre dans un fichier text
     // sauvegarder(&cps);
@@ -148,7 +147,6 @@ int trouveTheme(T_Tab_Theme * theme, char *nomTh){
     theme->tab[theme->nbTh].nbSD = 0;
     theme->nbTh++;
     return theme->nbTh - 1;
-
 }
 
 int comp_num(const void *a, const void *b) {
