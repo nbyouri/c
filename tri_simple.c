@@ -2,17 +2,17 @@
 
 #define BUF 5
 
-int  cmp(int, int);
+int  cmp(int *, int *);
 void swap(int *, int *);
 void tri(int *);
 
 static int tab[BUF] = { 0, 3, 2, -2, 9};
 
-int cmp(int a, int b) {
-    return a - b;
+int cmp(int *a, int *b) {
+    return *a - *b;
 }
 
-void swap(int * a, int * b) {
+void swap(int *a, int *b) {
     int  te;
     te = *a;
     *a = *b;
@@ -22,7 +22,7 @@ void swap(int * a, int * b) {
 void tri(int *t) {
     for (int i = 0; i < BUF; i++) {
         for (int j = 0; j < BUF-1; j++) {
-            if (cmp(t[j], t[j+1]) > 0) 
+            if (cmp(&t[j], &t[j+1]) > 0) 
                 swap(&t[j], &t[j+1]);
         }
     }
