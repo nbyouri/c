@@ -234,7 +234,7 @@ void lire_binaire(T_Tab_CPS * cps) {
         exit(EXIT_FAILURE);
     fread(cps->tab, sizeof(cps->tab), 1, f);
     if ((f2 = fopen("themes.bin", "rb")) == NULL)
-       exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     fread(themes.tab, sizeof(themes.tab), 1, f2);
     printf("      %-80s %-8s%-8s%-32s %5s\n%s%s\n", "titre", "num", "annee", "theme", "sous-theme",
             "-------------------------------------------------------------------------------------------",
