@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #define BUF 5
+#define TAILLE(X) (int)(sizeof(X)/sizeof(X[0]))
 
 int  cmp(int *, int *);
 void swap(int *, int *);
@@ -20,8 +21,8 @@ void swap(int *a, int *b) {
 }
 
 void tri(int *t) {
-    for (int i = 0; i < BUF; i++) {
-        for (int j = 0; j < BUF-1; j++) {
+    for (int i = 0; i < TAILLE(tab); i++) {
+        for (int j = 0; j < TAILLE(tab)-1; j++) {
             if (cmp(&t[j], &t[j+1]) > 0) 
                 swap(&t[j], &t[j+1]);
         }
@@ -30,6 +31,6 @@ void tri(int *t) {
 
 int main(void) {
     tri(tab);
-    for (int k = 0; k < BUF; k++) 
+    for (int k = 0; k < TAILLE(tab); k++) 
         printf("%d\n", tab[k]);
 }
