@@ -25,15 +25,17 @@ void ecrire_binaire(type_manege *);
 void lire_fichtexte(void);
 void lire_fibinaire(type_manege *);
 void charge_fitexte(type_manege *);
+void lire_ligne(type_manege *);
 
 int main(void) {
     type_manege riding;
-    // initialiser_bd(&riding);
-    // ecrire_binaire(&riding);
+    //initialiser_bd(&riding);
+    //ecrire_binaire(&riding);
     // ecrire_fitexte(&riding);
     // lire_fichtexte();
-    // lire_fibinaire(&riding);
-    charge_fitexte(&riding);
+    //lire_fibinaire(&riding);
+    lire_ligne(&riding);
+    //charge_fitexte(&riding);
     return 0;
 }
 
@@ -81,6 +83,7 @@ void lire_fichtexte(void) {
 void lire_fibinaire(type_manege * manege) {
     FILE *bdd;
     int i = 0;
+    int nb = 0;
     if ((bdd = fopen(FICHIER_BINAIRE, "rb")) == NULL)
         exit(EXIT_FAILURE);
     fread(manege->chevaux, sizeof(manege->chevaux), 1, bdd);
@@ -111,5 +114,23 @@ void charge_fitexte(type_manege * manege) {
                 manege->chevaux[i].discipline, 
                 manege->chevaux[i].couleur, 
                 manege->chevaux[i].taille);
+    fclose(bdd);
+}
+
+void lire_ligne(type_manege * manege) {
+    FILE *bdd;
+    int nb = 0;
+    if ((bdd = fopen(FICHIER_BINAIRE, "rb")) == NULL)
+        exit(EXIT_FAILURE);
+    fread(&manege->chevaux, sizeof(type_cheval), 1, bdd);
+    while (!feof(bdd)) {
+        //nb++;
+        printf("%s : %s : %d\n",
+                manege->chevaux->discipline, 
+                manege->chevaux->couleur, 
+                manege->chevaux->taille);
+        fread(&manege->chevaux, sizeof(type_cheval), 1, bdd);
+    }
+    //printf("%d\n", nb); //nombre de lignes
     fclose(bdd);
 }
