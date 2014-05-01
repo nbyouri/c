@@ -5,7 +5,6 @@
 #define MAX_COTES 5
 #define MAX_ETU 25
 #define MAX_CAR 20
-#define taille(X) sizeof(X)/sizeof(X[0])
 
 typedef struct {
     int matricule;
@@ -28,6 +27,7 @@ void afficher_classe(classe *);
 int  comparer_moyennes(const void *, const void *);
 void trier_par_moyenne(classe *);
 void ecrire_binaire(classe *);
+void ecrire_texte(classe *);
 
 void afficher_etudiant(etu * e) {
     int i = 0;
@@ -58,7 +58,7 @@ void calculer_moyenne(etu * e) {
 }
 
 int check_cote(float cote) {
-    int decim = 10 * (cote - (int)cote);
+    int decim = (int)(10 * (cote - (int)cote));
     if (cote > 20 || cote < 0) return 1;
     else if (decim == 5 || decim == 0) return 0;
     else return 1;
@@ -93,14 +93,14 @@ void afficher_classe(classe * c) {
 int comparer_moyennes(const void *a, const void *b) {
     etu *e1 = (etu *)a;
     etu *e2 = (etu *)b;
-    return e2->moyenne - e1->moyenne;
+    return (int)(10 * e2->moyenne) - (int)(10 * e1->moyenne);
 }
 
 void trier_par_moyenne(classe * c) {
     int i = 0;
     for (i = 0; i < c->nb; i++)
         calculer_moyenne(&c->tab[i]);
-    qsort(c->tab, c->nb, sizeof(c->tab[0]), comparer_moyennes);
+    qsort(c->tab, (unsigned int)c->nb, sizeof(c->tab[0]), comparer_moyennes);
 }
 
 void ecrire_binaire(classe * c) {
@@ -110,6 +110,20 @@ void ecrire_binaire(classe * c) {
     fwrite(c->tab, sizeof(c->tab), 1, f);
     fclose(f);
 }
+
+void ecrire_texte(classe * c) {
+    FILE *f;
+    if ((f = fopen("classe.txt", "wt")) == NULL)
+        exit(EXIT_FAILURE);
+    int i = 0;
+    int j = 0;
+    for (i = 0; i < c->nb; i++) {
+        fprintf(f, "Nom : %s\nMatricule : %d\n", c->tab[i].nom, c->tab[i].matricule);
+        for (j = 0; j < MAX_COTES; j++)
+           fprintf(f, "Cote nr.%d : %2.1f/20\n", i+1, c->tab[i].cotes[j]);
+        fprintf(f, "Moyenne : %2.1f%%\n", c->tab[i].moyenne);
+    }
+}
 int main(void) {
     classe tm;
     initialiser_classe(&tm);
@@ -117,5 +131,6 @@ int main(void) {
     trier_par_moyenne(&tm);
     afficher_classe(&tm);
     ecrire_binaire(&tm);
+    ecrire_texte(&tm);
     return 0;
 }
