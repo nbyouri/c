@@ -28,6 +28,7 @@ int  comparer_moyennes(const void *, const void *);
 void trier_par_moyenne(classe *);
 void ecrire_binaire(classe *);
 void ecrire_texte(classe *);
+void lire_binaire(classe *);
 
 void afficher_etudiant(etu * e) {
     int i = 0;
@@ -118,19 +119,29 @@ void ecrire_texte(classe * c) {
     int i = 0;
     int j = 0;
     for (i = 0; i < c->nb; i++) {
+        fputs("---------------\n", f);
         fprintf(f, "Nom : %s\nMatricule : %d\n", c->tab[i].nom, c->tab[i].matricule);
         for (j = 0; j < MAX_COTES; j++)
            fprintf(f, "Cote nr.%d : %2.1f/20\n", i+1, c->tab[i].cotes[j]);
         fprintf(f, "Moyenne : %2.1f%%\n", c->tab[i].moyenne);
     }
 }
+
+void lire_binaire(classe * c) {
+    FILE *f;
+    if ((f = fopen("classe.bin", "rb")) == NULL)
+        exit(EXIT_FAILURE);
+    fread(c->tab, sizeof(c->tab), 1, f);
+    ecrire_texte(c);
+    fclose(f);
+}
+
 int main(void) {
     classe tm;
     initialiser_classe(&tm);
-    puts("\n---------------\n");
     trier_par_moyenne(&tm);
-    afficher_classe(&tm);
+    //afficher_classe(&tm);
     ecrire_binaire(&tm);
-    ecrire_texte(&tm);
+    lire_binaire(&tm);
     return 0;
 }
