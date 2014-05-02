@@ -12,9 +12,9 @@ void afficher_tab(char **tab, int nb) {
 	for (int i = 0; i < nb; printf("%s\n", *(tab + i++)));
 }
 
-void initialiser(char **tab, int nb, int n) {
+void initialiser(char **tab, int nb, int nb2) {
 	int i = 0;
-	for (i = nb; i < nb + n; i++) {
+	for (i = nb; i < nb + nb2; i++) {
 		printf("chaine nr.%d? : ", i);
 		tab[i] = malloc(MAX_CAR);
 		scanf("%s", tab[i]);
@@ -24,8 +24,9 @@ void initialiser(char **tab, int nb, int n) {
 int main(void) {
 	char **tab;
 	char **retab;
-	int nb;
-	int n;
+	int nb = 0;
+	int nb2 = 0;
+	int i = 0;
 
 	// allocation initiale
 	printf("Combien de chaines de car? : ");
@@ -37,12 +38,14 @@ int main(void) {
 
 	// reallocation; on rajoute des elements
 	printf("Combien de chaines voulez vous en plus? : ");
-	scanf("%d", &n);
-	if ((retab = realloc(tab, (unsigned int)n)) == NULL)
+	scanf("%d", &nb2);
+	if ((retab = realloc(tab, (unsigned long)(nb + nb2) * sizeof(char **))) == NULL)
 		return -1;
 	tab = retab;
-	initialiser(tab, nb, n);
-	afficher_tab(tab, n+nb);
+	initialiser(tab, nb, nb2);
+	afficher_tab(tab, nb+nb2);
+	for (i = 0; i < nb+nb2; free(tab[i++]));
 	free(tab);
+	tab = NULL;
 	return 0;
 }
