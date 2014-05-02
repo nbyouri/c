@@ -26,7 +26,6 @@ int main(void) {
 	char **retab;
 	int nb;
 	int n;
-	int i;
 
 	// allocation initiale
 	printf("Combien de chaines de car? : ");
@@ -39,7 +38,7 @@ int main(void) {
 	// reallocation; on rajoute des elements
 	printf("Combien de chaines voulez vous en plus? : ");
 	scanf("%d", &n);
-	if ((retab = (char **)realloc(tab, n)) == NULL)
+	if ((retab = (char **)realloc(tab, (unsigned int)n)) == NULL)
 		return -1;
 	tab = retab;
 	initialiser(tab, nb, n);
