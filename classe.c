@@ -120,7 +120,8 @@ void ecrire_texte(classe * c) {
     int j = 0;
     for (i = 0; i < c->nb; i++) {
         fputs("---------------\n", f);
-        fprintf(f, "Nom : %s\nMatricule : %d\n", c->tab[i].nom, c->tab[i].matricule);
+        fprintf(f, "Nom : %s\nMatricule : %d\n", 
+            c->tab[i].nom, c->tab[i].matricule);
         for (j = 0; j < MAX_COTES; j++)
            fprintf(f, "Cote nr.%d : %2.1f/20\n", i+1, c->tab[i].cotes[j]);
         fprintf(f, "Moyenne : %2.1f%%\n", c->tab[i].moyenne);
