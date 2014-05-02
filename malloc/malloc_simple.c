@@ -21,13 +21,13 @@ int main(void) {
 	int *retab; // pointeur pour reallocation
 	printf("Combien d'elements voulez vous dans votre tableau?: ");
 	scanf("%d", &nb);
-	if ((tab = (int *)malloc(nb)) == NULL)
+	if ((tab = malloc(nb)) == NULL)
 		return -1;
 	initialiser_tab(tab, 0, nb);
 	afficher_tab(tab, nb);
 	printf("Combien d'elements en plus voulez vous?: ");
 	scanf("%d", &n);
-	if ((retab = (int *)realloc(tab, n)) == NULL)
+	if ((retab = realloc(tab, n)) == NULL)
 		return -1;
 	tab = retab;
 	initialiser_tab(tab, nb, n);
