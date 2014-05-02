@@ -57,7 +57,8 @@ void ecrire_fitexte(type_manege * manege) {
         exit(EXIT_FAILURE);
     for (i = 0; i < manege->nbCh; i++) 
         fprintf(bdd, "%d : Discipline : %s : Couleur : %s : Taille : %d\n", 
-                i, manege->chevaux[i].discipline, manege->chevaux[i].couleur, manege->chevaux[i].taille);
+                i, manege->chevaux[i].discipline, 
+                manege->chevaux[i].couleur, manege->chevaux[i].taille);
     fclose(bdd);
 }
 
@@ -89,7 +90,8 @@ void lire_fibinaire(type_manege * manege) {
     fread(manege->chevaux, sizeof(manege->chevaux), 1, bdd);
     for (i = 0; i < TAILLE(manege->chevaux); i++)
         printf("%d : Discipline : %s Couleur : %s Taille : %d\n", 
-                i, manege->chevaux[i].discipline, manege->chevaux[i].couleur, manege->chevaux[i].taille);
+                i, manege->chevaux[i].discipline, 
+                manege->chevaux[i].couleur, manege->chevaux[i].taille);
     fclose(bdd);
 }
 
