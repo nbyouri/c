@@ -72,5 +72,33 @@ int main(void) {
     printf("sizeof(personne) = %lu\n", sizeof(personne));
     printf("sizeof(classe.etudiants) = %lu\n", sizeof(TM1.etudiants));
     printf("sizeof(classe.nb) = %lu\n", sizeof(TM1.nb));
+
+
+    puts("/*----------------------------------------------------------------*/");
+
+    // pointeurs
+    int i;
+    #define MAX 3
+    int tab[MAX] = { 9, 3, 5 };
+    puts("\n");
+    for (i = 0; i < MAX; i++)
+        printf("tab[%d] = tab + %d = %d = %p\n", i, i, tab[i], (tab + i));
+                                            // indice,content, adresse
+    puts("\n");
+    printf("for (int i = 0; i < ""MAX""; printf(tab[i++])) and\n");
+    printf("for (int i = 0; i < ""MAX""; printf(*(tab + i++))) = ");
+    for (i = 0; i < MAX; printf("%d ", (*(tab + i++))));
+
+    puts("\n");
+    printf("tab = %p\n", tab);
+
+    printf("*tab = %d\n", *tab);
+    printf("*(tab + 1) = %d\n", *(tab + 1));
+    printf("&(*(tab + 1)) = %p\n", &(*(tab + 1)));
+    printf("(&(*tab)) = %p\n", (&(*tab)));
+    printf("(*(&tab)) = %p\n", (*(&tab)));
+    printf("(*(&tab) + 2)) = %p\n", (*(&tab) + 2));
+    printf("(*(*(&tab) + 2)) = %d\n", (*(*(&tab) + 2)));
+    printf("(&(*(*(&tab) + 2))) = %p\n", (&(*(*(&tab) + 2))));
     return 0;
 }
