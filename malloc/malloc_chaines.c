@@ -43,12 +43,12 @@ int main(void) {
 		return -1;
 	tab = retab;
 	initialiser(tab, nb, nb2);
-	afficher_tab(tab, nb+nb2);
+	afficher_tab(tab, nb + nb2);
 
 	// liberation des elements en memoire
-	for (i = 0; i < nb+nb2; free(tab[i++]));
+	for (i = 0; i < (nb + nb2); free(tab[i++]));
 	free(tab);
 	tab = NULL;
-	
+
 	return 0;
 }
