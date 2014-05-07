@@ -3,9 +3,9 @@
 // Nicolas Sias
 // Wilms Henri
 
-#include <stdio.h>  // printf, sprintf, fprint, fopen, fgets, fscanf, fclose, fread, fwrite
+#include <stdio.h>  // printf, sprintf
 #include <stdlib.h> // atoi, exit, qsort
-#include <string.h> // strlen, strcpy, strcmp, strtok, strcat
+#include <string.h> // strlen, strcpy, strcmp, strtok, strcat, strcasecmp
 
 // constantes
 #define CSV "C'est pas sorcier.csv"
