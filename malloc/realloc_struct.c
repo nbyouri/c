@@ -7,18 +7,20 @@
 #define MAX_MARK 3
 #define MAX_CHAR 20
 
+struct student {
+    int id;
+    char name[MAX_CHAR];
+    int marks[MAX_MARK];
+    struct {
+        int day;
+        int mon;
+        int yea;
+    } birthdate;
+};
+
 static struct class {
     int nbs;
-    struct student {
-        int id;
-        char name[MAX_CHAR];
-        int marks[MAX_MARK];
-        struct {
-            int day;
-            int mon;
-            int yea;
-        } birthdate;
-    } * students;
+    struct student * students;
 } compsci;
 
 struct index {
@@ -39,11 +41,11 @@ struct student initializestudent(void) {
     int randomnum = arc4random() % MAX_CHAR;
     char *randomstr;
     c.id = ++counter;
-    randomstr = malloc(2);
+    randomstr = malloc(MAX_CHAR * sizeof(char));
     char nom[] = "peter";
     strncpy(c.name, nom, sizeof(nom));
     sprintf(randomstr, "%d", randomnum);
-    strncat(c.name, randomstr, strlen(randomstr));
+    strncat(c.name, randomstr, strnlen(randomstr, MAX_CHAR));
     randomnum = arc4random() % MAX_CHAR;
     return c;
 }
@@ -60,7 +62,7 @@ void liststudents(struct class * c) {
     int i = 0;
     for (i = 0; i < c->nbs; i++) {
         printf("Student nr.%d\n"
-            "Name : %s\n", i, c->students[i].name);
+                "Name : %s\n", i, c->students[i].name);
     }
 }
 
@@ -72,10 +74,10 @@ int main(void) {
     srandom((unsigned)time(NULL));
     while (stay) {
         printf("1. Add a student\n"
-            "2. Sort students\n"
-            "3. Print the student\n"
-            "4. Search a student\n"
-            "0. Exit\n");
+                "2. Sort students\n"
+                "3. Print the student\n"
+                "4. Search a student\n"
+                "0. Exit\n");
         scanf("%d", &ch);
         switch (ch) {
             case 1 :
@@ -86,14 +88,14 @@ int main(void) {
                 break;
             case 2 : break;
             case 3 : 
-                liststudents(&compsci);
-                break;
+                     liststudents(&compsci);
+                     break;
             case 4 : break;
             case 0 : stay = false; break;
             default  : printf("Wrong choice\n");
         }
     }
     //free(compsci);
-    free(indexer);
+    //free(indexer);
     return 0;
 }
