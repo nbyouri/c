@@ -54,8 +54,8 @@ int  trouveTheme(T_Tab_Theme *, char *);
 int  trouveSD(T_Tab_Theme *, int, char *);
 int  comp_num(const void *, const void *);
 int  comp_titres(const void *, const void *);
-int  comp_themes_sousthemes(const void *, const void *);
-int  comp_annee_themes_sousthemes(const void *, const void *);
+int  comp_themes_sousthemes_titre(const void *, const void *);
+int  comp_annee_themes_sousthemes_titre(const void *, const void *);
 void sauvegarder(T_Tab_CPS *);
 void lire_binaire(T_Tab_CPS *);
 
@@ -71,10 +71,10 @@ int main(void) {
     //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_titres);
 
     // tri par nom de themes puis sous themes puis titre
-    //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_themes_sousthemes);
+    //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_themes_sousthemes_titre);
 
     // tri par annee puis theme puis sous theme puis titre
-    //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_annee_themes_sousthemes);
+    //qsort(cps.tab, (unsigned int)cps.nb, sizeof(cps.tab[0]), comp_annee_themes_sousthemes_titre);
     //  f(base a trier (toujours un pointeur!), entier non signe, 
     //  taille d'un element de la base, fonction de comparaison retournant un entier et 
     //  avec deux pointeurs comme argument
@@ -164,7 +164,7 @@ int comp_titres(const void *a, const void *b) {
     return strcasecmp(p1->titre, p2->titre);
 }
 
-int comp_themes_sousthemes(const void *a, const void *b) {
+int comp_themes_sousthemes_titre(const void *a, const void *b) {
     T_CPS * p1 = (T_CPS *)a;
     T_CPS * p2 = (T_CPS *)b;
     char s1[N_MAX_CAR_THEME+N_MAX_CAR_SD+N_MAX_CAR_TITRE];
@@ -178,7 +178,7 @@ int comp_themes_sousthemes(const void *a, const void *b) {
     return strcasecmp(s1, s2);                       // on compare
 }
 
-int comp_annee_themes_sousthemes(const void *a, const void *b) {
+int comp_annee_themes_sousthemes_titre(const void *a, const void *b) {
     // variables
     T_CPS * p1 = (T_CPS *)a;
     T_CPS * p2 = (T_CPS *)b;
