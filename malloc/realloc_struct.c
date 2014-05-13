@@ -103,7 +103,6 @@ int sortbirthdate(const void * a, const void * b) {
         + p2->birthdate.day;
     snprintf(s1, sizeof(s1), "%d", birthdate1);
     snprintf(s2, sizeof(s2), "%d", birthdate2);
-    printf("%d, %d\n", birthdate2, birthdate1);
     return strncmp(s2, s1, MAX_CHAR);
 }
 
@@ -121,6 +120,7 @@ int main(void) {
     int ch = 0;
     int i = 0;
     bool stay = true;
+    char input[MAX_CHAR];
     srandom((unsigned)time(NULL));
     while (stay) {
         printf("1. Add a student\n"
@@ -129,10 +129,13 @@ int main(void) {
                 "4. Search a student\n"
                 "5. Add 20 students at once\n"
                 "0. Exit\n");
-        scanf("%d", &ch);
+        fgets(input, sizeof(input), stdin);
+        if (sscanf(input, "%1d", &ch) != 1)
+            printf("wrong choice\n");
         switch (ch) {
             case 1 :
                 if ((compsci = addstudent(compsci, nbs)) == NULL) {
+                    nbs = 0;
                     printf("failed to add a student");
                     break;
                 }
@@ -149,6 +152,7 @@ int main(void) {
             case 5 :
                 for (i = 0; i < 20; i++) { 
                     if ((compsci = addstudent(compsci, nbs)) == NULL) {
+                        nbs = 0;
                         printf("failed to add a student");
                         break;
                     }
@@ -162,6 +166,7 @@ int main(void) {
     }
     free(compsci);
     compsci = NULL;
+    // free what's in the array?
     // free(indexer);
     // indexer = NULL;
     return 0;
