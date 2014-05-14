@@ -54,15 +54,15 @@ void initialize_student(struct student * c, unsigned int n) {
     // perecent
     c[n].percent = calcpercent(c[n].marks);
     // birthdate = 1980 -> 1995
-    c[n].birthdate.day = arc4random() % 31;
-    c[n].birthdate.mon = arc4random() % 12;
+    c[n].birthdate.day = arc4random() % 32;
+    c[n].birthdate.mon = arc4random() % 13;
     c[n].birthdate.yea = 1980 + arc4random() % 16;
 }
 
 struct student * addstudent(struct student * c, unsigned int n) {
     // expand the array
     struct student * p;
-    p = realloc(c, (n+1) * sizeof(struct student));
+    p = (struct student *)realloc(c, (n+1) * sizeof(struct student));
     if (p == NULL) {
         if (c != NULL)
             free(c);
@@ -128,7 +128,7 @@ struct indexer * index_year(struct student * c, unsigned int nbs, unsigned int *
             }
         }
         if (found == -1) {
-            id = realloc(id, ((*nbkey) + 1) * sizeof(struct indexer));
+            id = (struct indexer *)realloc(id, ((*nbkey) + 1) * sizeof(struct indexer));
             id[*nbkey].nb = 1;
             id[*nbkey].lst = (int *)malloc(sizeof(int));
             id[*nbkey].year = c[i].birthdate.yea;
@@ -164,7 +164,7 @@ void searchyear(struct student * c,  struct indexer * id, unsigned int nbkey) {
     if (sscanf(input, "%d", &key.year) != 1)
         printf("wrong choice\n");
     while (key.year != 0) {
-        temp = (struct indexer *)bsearch(&key, id, nbkey, sizeof(struct indexer), sortindexyear);
+        temp = (struct indexer *)bsearch(&key, id, nbkey, sizeof(temp[0]), sortindexyear);
         if (temp == NULL)
             printf("not found\n");
         else
@@ -187,7 +187,7 @@ int main(void) {
     struct indexer * indextab = NULL;
     unsigned int nbs = 0;
     unsigned int nbi = 0;
-    unsigned int ch = 0;
+    unsigned int cho = 0;
     unsigned int i = 0;
     bool stay = true;
     char input[MAX_CHAR];
@@ -200,9 +200,9 @@ int main(void) {
                 "5. Add 20 students at once\n"
                 "0. Exit\n");
         fgets(input, sizeof(input), stdin);
-        if (sscanf(input, "%1d", &ch) != 1)
+        if (sscanf(input, "%1d", &cho) != 1)
             printf("wrong choice\n");
-        switch (ch) {
+        switch (cho) {
             case 1 :
                 if ((compsci = addstudent(compsci, nbs)) == NULL) {
                     nbs = 0;
@@ -242,13 +242,14 @@ int main(void) {
             default  : printf("Wrong choice\n");
         }
     }
+    // free the allocated pointers
     free(compsci);
     compsci = NULL;
-    free(indextab);
     for (i = 0; i < nbi; i++) {
         free(indextab[i].lst);
         indextab[i].lst = NULL;
     }
+    free(indextab);
     indextab = NULL;
     return 0;
 }
