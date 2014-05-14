@@ -1,8 +1,3 @@
-
-
-// check realloc
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -133,7 +128,6 @@ struct indexer * index_year(struct student * c, unsigned int nbs, unsigned int *
             }
         }
         if (found == -1) {
-            // temp var for realloc?
             id = realloc(id, ((*nbkey) + 1) * sizeof(struct indexer));
             id[*nbkey].nb = 1;
             id[*nbkey].lst = (int *)malloc(sizeof(int));
@@ -141,7 +135,6 @@ struct indexer * index_year(struct student * c, unsigned int nbs, unsigned int *
             id[*nbkey].lst[0] = (int)i;
             (*nbkey)++;
         } else {
-            // temp var for realloc?
             id[found].lst = (int *)realloc(id[found].lst, (unsigned)(id[found].nb + 1) * sizeof(int));
             id[found].lst[id[found].nb] = (int)i;
             id[found].nb++;
@@ -226,7 +219,11 @@ int main(void) {
                 liststudents(compsci, nbs);
                 break;
             case 4 : 
-                indextab = index_year(compsci, nbs, &nbi);
+                if ((indextab = index_year(compsci, nbs, &nbi)) == NULL) {
+                    nbi = 0;
+                    printf("failed to create index");
+                    break;
+                }
                 printindex(indextab, nbi);
                 searchyear(compsci, indextab, nbi);
                 break;
