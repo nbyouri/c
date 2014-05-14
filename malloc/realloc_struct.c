@@ -1,3 +1,8 @@
+
+
+// check realloc
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,19 +24,23 @@ struct student {
     } birthdate;
 };
 
-// struct index {
-//     int year;
-//     int nb;
-//     int *lst;
-// };
+struct indexer {
+    int year;
+    unsigned int nb;
+    int *lst;
+};
 
 void initialize_student(struct student *, unsigned int);
 struct student * addstudent(struct student *, unsigned int);
 void liststudents(struct student *, unsigned int);
 void sortstudents(struct student *, unsigned int);
-int  sortid(const void *, const void *);
 int  sortbirthdate(const void *, const void *);
+int  sortindexyear(const void *, const void *);
 float calcpercent(float *);
+struct indexer * index_year(struct student *, unsigned int, unsigned int *);
+void printindex(struct indexer *, unsigned int);
+void searchyear(struct student *,  struct indexer *, unsigned int);
+void printstudent(struct student);
 
 void initialize_student(struct student * c, unsigned int n) {
     // put random data in struct fields
@@ -78,16 +87,7 @@ void liststudents(struct student * c, unsigned int nbs) {
 }
 
 void sortstudents(struct student * c, unsigned int nb) {
-    // by id
-    // qsort(c, nb, sizeof(c[0]), sortid);
-    // by birthdate
     qsort(c, nb, sizeof(c[0]), sortbirthdate);
-}
-
-int sortid(const void * a, const void * b) {
-    struct student * p1 = (struct student *)a;
-    struct student * p2 = (struct student *)b;
-    return p2->id - p1->id;
 }
 
 int sortbirthdate(const void * a, const void * b) {
@@ -106,6 +106,10 @@ int sortbirthdate(const void * a, const void * b) {
     return strncmp(s2, s1, MAX_CHAR);
 }
 
+int sortindexyear(const void * a, const void * b) {
+    return ((struct indexer *)a)->year - ((struct indexer *)b)->year;
+}
+
 float calcpercent(float * marks) {
     int i = 0;
     float result = 0;
@@ -114,11 +118,84 @@ float calcpercent(float * marks) {
     return result/MAX_MARK;
 }
 
+struct indexer * index_year(struct student * c, unsigned int nbs, unsigned int * nbkey) {
+    struct indexer * id = (struct indexer *)malloc(nbs * sizeof(struct indexer));
+    *nbkey = 0;
+    unsigned int i = 0;
+    unsigned int j = 0;
+    int found = 0;
+    for (i = 0; i < nbs; i++) {
+        found = -1;
+        for (j = 0; j < *nbkey; j++) {
+            if (c[i].birthdate.yea == id[j].year) {
+                found = (int)j;
+                break;
+            }
+        }
+        if (found == -1) {
+            // temp var for realloc?
+            id = realloc(id, ((*nbkey) + 1) * sizeof(struct indexer));
+            id[*nbkey].nb = 1;
+            id[*nbkey].lst = (int *)malloc(sizeof(int));
+            id[*nbkey].year = c[i].birthdate.yea;
+            id[*nbkey].lst[0] = (int)i;
+            (*nbkey)++;
+        } else {
+            // temp var for realloc?
+            id[found].lst = (int *)realloc(id[found].lst, (unsigned)(id[found].nb + 1) * sizeof(int));
+            id[found].lst[id[found].nb] = (int)i;
+            id[found].nb++;
+        }
+    }
+    qsort(id, (*nbkey), sizeof(id[0]), sortindexyear);
+    return id;
+}
+
+void printindex(struct indexer * id, unsigned int nbkey) {
+    unsigned int i = 0;
+    unsigned int j = 0;
+    for (i = 0; i < nbkey; i++) {
+        printf("year : %d\n", id[i].year);
+        for (j = 0; j < id[i].nb; j++)
+            printf("student array index: %d\n", id[i].lst[j]);
+        puts("\n");
+    }
+}
+
+void searchyear(struct student * c,  struct indexer * id, unsigned int nbkey) {
+    struct indexer * temp, key;
+    unsigned int i = 0;
+    char input[MAX_CHAR];
+    printf("Search by year (0=end): ");
+    fgets(input, sizeof(input), stdin);
+    if (sscanf(input, "%d", &key.year) != 1)
+        printf("wrong choice\n");
+    while (key.year != 0) {
+        temp = (struct indexer *)bsearch(&key, id, nbkey, sizeof(struct indexer), sortindexyear);
+        if (temp == NULL)
+            printf("not found\n");
+        else
+            for (i = 0; i < temp->nb; i++)
+                printstudent(c[temp->lst[i]]);
+        printf("year (0=end) : ");
+        scanf("%d", &key.year);
+    }
+}
+
+void printstudent(struct student c) {
+    printf("id : %02d :: name : %s \n"
+                "\t-> percent : %02.1f%% :: birthdate = %02d/%02d/%04d\n",
+                c.id, c.name, c.percent, c.birthdate.day, 
+                c.birthdate.mon, c.birthdate.yea);
+}
+
 int main(void) {
     struct student * compsci = NULL;
+    struct indexer * indextab = NULL;
     unsigned int nbs = 0;
-    int ch = 0;
-    int i = 0;
+    unsigned int nbi = 0;
+    unsigned int ch = 0;
+    unsigned int i = 0;
     bool stay = true;
     char input[MAX_CHAR];
     srandom((unsigned)time(NULL));
@@ -148,7 +225,11 @@ int main(void) {
             case 3 : 
                 liststudents(compsci, nbs);
                 break;
-            case 4 : break;
+            case 4 : 
+                indextab = index_year(compsci, nbs, &nbi);
+                printindex(indextab, nbi);
+                searchyear(compsci, indextab, nbi);
+                break;
             case 5 :
                 for (i = 0; i < 20; i++) { 
                     if ((compsci = addstudent(compsci, nbs)) == NULL) {
@@ -166,8 +247,11 @@ int main(void) {
     }
     free(compsci);
     compsci = NULL;
-    // free what's in the array?
-    // free(indexer);
-    // indexer = NULL;
+    free(indextab);
+    for (i = 0; i < nbi; i++) {
+        free(indextab[i].lst);
+        indextab[i].lst = NULL;
+    }
+    indextab = NULL;
     return 0;
 }
