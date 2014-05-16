@@ -76,6 +76,7 @@ void recherche(struct tfe * tab, int nb, struct index_titre * idtab, int nbid) {
 }
 
 int main(void) {
+    // variables
     struct index_titre * idtab = NULL;
     int nbi = 0;
     struct tfe tab[] = {
@@ -84,13 +85,14 @@ int main(void) {
         { .titre = "xcfd", .cat = 4 },
         { .titre = "harst", .cat = 1 },
     };
+
+    // indexation et recherche par titre
     int nbs = (sizeof(tab)/sizeof(tab[0]));
     idtab = indexation(tab, nbs, idtab, &nbi);
     recherche(tab, nbs, idtab, nbi);
-    // for (int n = 0; n < (sizeof(tab)/sizeof(tab[0])); n++) {
-    //     printf("travaux[%d] \n\t{ %s, %d },\n", n, tab[n].titre, tab[n].cat);
 
-    // }
+    // liberation
+    for (int i = 0; i < idtab->nb; free(idtab[i++].lst));
     free(idtab);
     return 0;
 }
