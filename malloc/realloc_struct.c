@@ -8,21 +8,21 @@
 #define MAX_CHAR 20
 
 struct student {
-    int id;
+    unsigned int id;
     char name[MAX_CHAR];
     float marks[MAX_MARK];
     float percent;
     struct {
-        int day;
-        int mon;
-        int yea;
+        unsigned int day;
+        unsigned int mon;
+        unsigned int yea;
     } birthdate;
 };
 
 struct indexer {
-    int year;
+    unsigned int year;
     unsigned int nb;
-    int *lst;
+    unsigned int *lst;
 };
 
 void initialize_student(struct student *, unsigned int);
@@ -44,11 +44,11 @@ void initialize_student(struct student * c, unsigned int n) {
     int i = 0;
     char nom[] = "peter";
     // id
-    c[n].id = (int)n;
+    c[n].id = n;
     // name
-    strncpy(c[n].name, nom, sizeof(nom));
+    strlcpy(c[n].name, nom, sizeof(nom));
     snprintf(randomstr, sizeof(randomstr), "%02d", randomnum);
-    strncat(c[n].name, randomstr, strlen(randomstr));
+    strlcat(c[n].name, randomstr, strlen(randomstr));
     // marks
     for (i = 0; i < MAX_MARK; c[n].marks[i++] = arc4random() % 100);
     // perecent
@@ -90,10 +90,10 @@ int sortbirthdate(const void * a, const void * b) {
     struct student * p2 = (struct student *)b;
     char s1[MAX_CHAR];
     char s2[MAX_CHAR];
-    int birthdate1 = (p1->birthdate.yea * 10000) 
+    unsigned int birthdate1 = (p1->birthdate.yea * 10000) 
         + (p1->birthdate.mon * 100) 
         + p1->birthdate.day;
-    int birthdate2 = (p2->birthdate.yea * 10000) 
+    unsigned int birthdate2 = (p2->birthdate.yea * 10000) 
         + (p2->birthdate.mon * 100) 
         + p2->birthdate.day;
     snprintf(s1, sizeof(s1), "%d", birthdate1);
@@ -102,7 +102,7 @@ int sortbirthdate(const void * a, const void * b) {
 }
 
 int sortindexyear(const void * a, const void * b) {
-    return ((struct indexer *)a)->year - ((struct indexer *)b)->year;
+    return (int)(((struct indexer *)a)->year - ((struct indexer *)b)->year);
 }
 
 float calcpercent(float * marks) {
@@ -130,13 +130,13 @@ struct indexer * index_year(struct student * c, unsigned int nbs, unsigned int *
         if (found == -1) {
             id = (struct indexer *)realloc(id, ((*nbkey) + 1) * sizeof(struct indexer));
             id[*nbkey].nb = 1;
-            id[*nbkey].lst = (int *)malloc(sizeof(int));
+            id[*nbkey].lst = (unsigned int *)malloc(sizeof(int));
             id[*nbkey].year = c[i].birthdate.yea;
-            id[*nbkey].lst[0] = (int)i;
+            id[*nbkey].lst[0] = i;
             (*nbkey)++;
         } else {
-            id[found].lst = (int *)realloc(id[found].lst, (unsigned)(id[found].nb + 1) * sizeof(int));
-            id[found].lst[id[found].nb] = (int)i;
+            id[found].lst = (unsigned int *)realloc(id[found].lst, (unsigned)(id[found].nb + 1) * sizeof(int));
+            id[found].lst[id[found].nb] = i;
             id[found].nb++;
         }
     }
