@@ -83,7 +83,7 @@ indexer * index_year(student * st, unsigned int nb, unsigned int * nbkey) {
                 break;
             }
         }
-        if (found == -1) {
+        if (found == -1) { // if not found
             idtab = (indexer *)realloc(idtab, (*nbkey + 1) * sizeof(indexer));
             idtab[*nbkey].nb = 1;
             idtab[*nbkey].year = st[i].bd.yea;
@@ -131,38 +131,46 @@ void search_year(student * stud, indexer * idtab, unsigned int nbi) {
 }
 
 int main(void) {
+	// variables
     student * compsci = NULL;
     indexer * indxtab = NULL;
     unsigned int i = 0;
     unsigned int nbs = 0;
     unsigned int nbi = 0;
+
+    // random seed
     srandom((unsigned)time(NULL));
+
     // initialize 100 students
     for (i = 0; i < 100; i++) {
         if ((compsci = addstudent(compsci, nbs)) == NULL) {
             printf("failed to allocate enough memory for a new student\n");
             nbs = 0;
-            break;
+            return -1;
         } else {
             initialize_student(compsci, nbs);
             nbs++;
         }
     }
+
     // print initialized students
     for (i = 0; i < nbs; i++) {
         printf("%02d) %s :: %02d/%02d/%04d\n", 
                 compsci[i].num, compsci[i].name, compsci[i].bd.day, 
                 compsci[i].bd.mon, compsci[i].bd.yea);
     }
+
     // create index by year
     if ((indxtab = index_year(compsci, nbs, &nbi)) == NULL) {
         nbi = 0;
         printf("failed to index\n");
         return -1;
-    } else 
+    } else {
         // if the index was properly created, search
         printindex(indxtab, nbi);
-    search_year(compsci, indxtab, nbi);
+	    search_year(compsci, indxtab, nbi);
+	}
+
     // free allocated memory
     free(compsci);
     compsci = NULL;
@@ -174,5 +182,4 @@ int main(void) {
     indxtab = NULL;
     return 0;
 }
-
 
