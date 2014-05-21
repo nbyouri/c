@@ -5,6 +5,8 @@
 #include <time.h>
 
 #define MAX 20
+#define MAX_SHORT 10
+#define MAX_BIG 100
 
 // data structures
 
@@ -27,15 +29,28 @@ typedef struct {
 // function declarations
 
 int sort_index(const void *, const void *);
+int sort_years(const void *, const void *);
 student * addstudent(student *, unsigned int);
 indexer * index_year(student *, unsigned int, unsigned int *);
 void initialize_student(student *, unsigned int);
 void printindex(indexer *, unsigned int);
 void search_year(student *, indexer *, unsigned int);
-void printstudent(student);
+void printstudent(FILE *, student);
+void write_text_file(student *, unsigned int, const char *);
+void read_text_file(const char *);
 
 int sort_index(const void * a, const void * b) {
     return (int)(((indexer *)a)->year - ((indexer *)b)->year);
+}
+
+int sort_years(const void * a, const void * b) {
+    student * p1 = (student *)a;
+    student * p2 = (student *)b;
+    char s1[MAX_SHORT];
+    char s2[MAX_SHORT];
+    snprintf(s1, sizeof(s1), "%d", p1->bd.yea * 10000 + p1->bd.mon * 100 + p1->bd.day);
+    snprintf(s2, sizeof(s2), "%d", p2->bd.yea * 10000 + p2->bd.mon * 100 + p2->bd.day);
+    return strncmp(s1, s2, sizeof(s1));
 }
 
 student * addstudent(student * c, unsigned int n) {
@@ -52,19 +67,24 @@ student * addstudent(student * c, unsigned int n) {
 }
 
 void initialize_student(student * stud, unsigned int nb) {
-    char name[] = "peter";
+    char lettres[] = "abcdefghijklmnopqrstuvwxyz";
     char randomstr[MAX];
     stud[nb].num = nb;
+    char name[MAX_SHORT];
+    unsigned int i = 0;
+    for (i = 0; i < sizeof(name); i++) 
+        name[i] = lettres[arc4random() % strlen(lettres)];
+    name[strlen(name)] = '\0';
     snprintf(randomstr, sizeof(randomstr), 
             "%s%02d", name, arc4random() % 100);
     strlcpy(stud[nb].name, randomstr, sizeof(stud[nb].name));
-    stud[nb].bd.day = arc4random() % 32;
-    stud[nb].bd.mon = arc4random() % 13;
-    stud[nb].bd.yea = 1980 + arc4random() % 16;
+    stud[nb].bd.day = 1 + arc4random() % 31;
+    stud[nb].bd.mon = 1 + arc4random() % 12;
+    stud[nb].bd.yea = 1990 + arc4random() % 6;
 }
 
-void printstudent(student c) {
-    printf("id : %02d :: name : %s :: birthdate = %02d/%02d/%04d\n",
+void printstudent(FILE * fname, student c) {
+    fprintf(fname, "id : %02d :: name : %s :: birthdate = %02d/%02d/%04d\n",
             c.num, c.name, c.bd.day, 
             c.bd.mon, c.bd.yea);
 }
@@ -80,7 +100,7 @@ indexer * index_year(student * st, unsigned int nb, unsigned int * nbkey) {
         for (j = 0; j < *nbkey; j++) {	
             if (st[i].bd.yea == idtab[j].year) {
                 found = (int)j;
-                break;
+                break;  // we stop looping 
             }
         }
         if (found == -1) { // if not found
@@ -116,30 +136,56 @@ void search_year(student * stud, indexer * idtab, unsigned int nbi) {
     indexer * temp, key;
     unsigned int i = 0;
     char line[MAX];
-    printf("search by year (0=end) : ");
-    fgets(line, sizeof(line), stdin);
-    sscanf(line, "%d", &key.year);
-    if (key.year != 0) {
-        temp = (indexer *)bsearch(&key, idtab, 
-                nbi, sizeof(indexer), sort_index);
-        if (temp == NULL)
-            printf("not found\n");
+    do {
+        printf("search by year (0=end) : ");
+        fgets(line, sizeof(line), stdin);
+        if (sscanf(line, "%d", &key.year) != 1)
+            printf("wrong choice!\n");
         else
-            for (i = 0; i < temp->nb; i++)
-                printstudent(stud[temp->lst[i]]);
-    }
+            if (key.year != 0) {
+                temp = (indexer *)bsearch(&key, idtab, 
+                        nbi, sizeof(indexer), sort_index);
+                if (temp == NULL)
+                    printf("not found\n");
+                else
+                    for (i = 0; i < temp->nb; i++)
+                        printstudent(stdout, stud[temp->lst[i]]);
+            }
+    } while (key.year != 0);
+}
+
+void write_text_file(student * stud, unsigned int nb, const char * fname) {
+    FILE *f;
+    unsigned int i = 0;
+    if ((f = fopen(fname, "wt")) == NULL)
+        printf("failed to write to text file: %s\n", fname);
+    else
+        for (i = 0; i < nb; i++) 
+            printstudent(f, stud[i]);
+    fclose(f);
+}
+
+void read_text_file(const char * fname) {
+    FILE *f;
+    char s[MAX_BIG];
+    if ((f = fopen(fname, "rt")) == NULL)
+        printf("failed to open file");
+    else
+        while (fgets(s, sizeof(s), f))
+            printf("%s", s);
+    fclose(f);
 }
 
 int main(void) {
-	// variables
+    // variables
     student * compsci = NULL;
     indexer * indxtab = NULL;
     unsigned int i = 0;
     unsigned int nbs = 0;
     unsigned int nbi = 0;
 
-    // random seed
-    srandom((unsigned)time(NULL));
+    // terrible random seed
+    //srandom((unsigned)time(NULL));
 
     // initialize 100 students
     for (i = 0; i < 100; i++) {
@@ -168,8 +214,13 @@ int main(void) {
     } else {
         // if the index was properly created, search
         printindex(indxtab, nbi);
-	    search_year(compsci, indxtab, nbi);
-	}
+        search_year(compsci, indxtab, nbi);
+    }
+
+    // write and read the sorted student array to a text file
+    qsort(compsci, nbs, sizeof(compsci[0]), sort_years);
+    write_text_file(compsci, nbs, "compsci.txt");
+    read_text_file("compsci.txt");
 
     // free allocated memory
     free(compsci);
