@@ -82,7 +82,7 @@ int main(void) {
     struct tfe tab[] = {
         { .titre = "bcdef", .cat = 2 },
         { .titre = "harst", .cat = 4 }, 
-        { .titre = "xcfd", .cat = 4 },
+        { .titre = "xcfd",  .cat = 4 },
         { .titre = "harst", .cat = 1 },
     };
 

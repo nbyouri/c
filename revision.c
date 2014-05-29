@@ -38,6 +38,7 @@ void search_year(student *, indexer *, unsigned int);
 void printstudent(FILE *, student);
 void write_text_file(student *, unsigned int, const char *);
 void read_text_file(const char *);
+void write_binary_file(student *, unsigned int, const char *);
 
 int sort_index(const void * a, const void * b) {
     return (int)(((indexer *)a)->year - ((indexer *)b)->year);
@@ -176,6 +177,15 @@ void read_text_file(const char * fname) {
     fclose(f);
 }
 
+void write_binary_file(student * stud, unsigned int nb, const char * fname) {
+    FILE *f;
+    if ((f = fopen(fname, "wb")) == NULL)
+        printf("failed to write to binary file\n");
+    else
+        fwrite(stud, sizeof(stud[0]), nb, f);
+    fclose(f);
+}
+
 int main(void) {
     // variables
     student * compsci = NULL;
@@ -185,6 +195,7 @@ int main(void) {
     unsigned int nbi = 0;
 
     // terrible random seed
+    // arc4random() doesn't need it
     //srandom((unsigned)time(NULL));
 
     // initialize 100 students
@@ -210,7 +221,6 @@ int main(void) {
     if ((indxtab = index_year(compsci, nbs, &nbi)) == NULL) {
         nbi = 0;
         printf("failed to index\n");
-        return -1;
     } else {
         // if the index was properly created, search
         printindex(indxtab, nbi);
@@ -220,6 +230,7 @@ int main(void) {
     // write and read the sorted student array to a text file
     qsort(compsci, nbs, sizeof(compsci[0]), sort_years);
     write_text_file(compsci, nbs, "compsci.txt");
+    write_binary_file(compsci, nbs, "compsci.bin");
     read_text_file("compsci.txt");
 
     // free allocated memory
