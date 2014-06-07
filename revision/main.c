@@ -20,7 +20,7 @@ int main(void) {
     }
 
     // print all the students
-    print_students(compsci, nbstud);
+    print_students(stdout, compsci, nbstud);
 
     // create the index by number
     if ((indexnum = index_num(compsci, nbstud, &nbindex)) == NULL)
@@ -30,6 +30,10 @@ int main(void) {
         // search through the students
         search_num(compsci, indexnum, nbindex);
     }
+
+    // write students to files
+    write_file("compsci.txt", "wt", compsci, nbstud);
+    write_file("compsci.bin", "wb", compsci, nbstud);
 
     // free the pointers
     free(compsci);
