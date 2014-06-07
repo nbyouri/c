@@ -32,6 +32,8 @@ id_num * index_num(student * class, unsigned int nbs, unsigned int * nbi) {
             // if found, just add the student in the index list
             id[found].lst = (unsigned int *)realloc(id[found].lst, 
                     (id[found].nb + 1) * sizeof(int));
+            if (id[found].lst == NULL)
+                error("failed reallocation\n");
             id[found].lst[id[found].nb] = i;
             id[found].nb++;
         }

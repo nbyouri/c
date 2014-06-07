@@ -1,8 +1,7 @@
 CC=	clang
-CFLAGS=	-Weverything
 #CFLAGS+= -g
 LDFLAGS=	
-SRCS=	main.c init.c index.c search.c files.c
+SRCS=	main.c init.c index.c search.c files.c tools.c
 TARGET=	class
 
 all:
@@ -11,3 +10,5 @@ all:
 clean:
 	if [ -f *.o ]; then rm *.o; fi
 	if [ -f ${TARGET} ]; then rm ${TARGET}; fi
+	if [ -f *.txt ]; then rm *.txt; fi
+	if [ -f *.bin ]; then rm *.bin; fi
