@@ -1,4 +1,3 @@
-
 #include "include.h"
 
 student * grow(student * class, unsigned int nb) {

@@ -1,6 +1,7 @@
 #include "include.h"
 
 int main(void) {
+    /*
     student * compsci = NULL;
     id_num * indexnum = NULL;
     unsigned int nbstud = 0;
@@ -29,21 +30,27 @@ int main(void) {
     else {
         // search through the students
         search_num(compsci, indexnum, nbindex);
-    }
+    }*/
 
     // write students to files
-    write_file("compsci.txt", "wt", compsci, nbstud);
-    write_file("compsci.bin", "wb", compsci, nbstud);
+    //write_file("compsci.txt", "wt", compsci, nbstud);
+    //write_file("compsci.bin", "wb", compsci, nbstud);
+
+    // load from text file
+    student * temp = NULL;
+    unsigned int nbtemp = 0;
+    read_file("compsci.txt", "rt", temp, &nbtemp);
+    
 
     // free the pointers
-    free(compsci);
+    /*free(compsci);
     compsci = NULL;
     for (i = 0; i < nbindex; i++) {
         free(indexnum[i].lst);
         indexnum[i].lst = NULL;
     }
     free(indexnum);
-    indexnum = NULL;
+    indexnum = NULL;*/
 
     return 0;
 }
