@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #define MAX_CHAR 20
 
@@ -34,4 +35,4 @@ id_num * index_num(student *, unsigned int, unsigned int *);
 int sort_index_num(const void *, const void *);
 void search_num(student *, id_num *, unsigned int);
 void write_file(const char *, const char *, student *, unsigned int);
-void read_file(const char *, const char *, student *, unsigned int *);
+void * read_file(const char *, const char *, student *, unsigned int *);

@@ -1,4 +1,4 @@
-CC=	clang
+CC=	clang -g
 SRCS=	main.c init.c index.c search.c files.c tools.c
 
 OBJS= $(SRCS:.c=.o)

@@ -39,18 +39,27 @@ int main(void) {
     // load from text file
     student * temp = NULL;
     unsigned int nbtemp = 0;
-    read_file("compsci.txt", "rt", temp, &nbtemp);
-    
+    temp = read_file("compsci.txt", "rt", temp, &nbtemp);
+    if (temp == NULL) {
+        error("failed to load data from file");
+    } else {
+        // and write the data to a binary file
+        print_students(stdout, temp, nbtemp);
+        write_file("temp.bin", "wb", temp, nbtemp);
+    }
+    free(temp);
+    temp = NULL;
+
 
     // free the pointers
     /*free(compsci);
-    compsci = NULL;
-    for (i = 0; i < nbindex; i++) {
-        free(indexnum[i].lst);
-        indexnum[i].lst = NULL;
-    }
-    free(indexnum);
-    indexnum = NULL;*/
+      compsci = NULL;
+      for (i = 0; i < nbindex; i++) {
+      free(indexnum[i].lst);
+      indexnum[i].lst = NULL;
+      }
+      free(indexnum);
+      indexnum = NULL;*/
 
     return 0;
 }
