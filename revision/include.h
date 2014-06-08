@@ -28,7 +28,7 @@ typedef struct {
 
 // function prototypes
 
-void error(const char *);
+void error(const char *) __attribute__ ((noreturn));
 void * grow(student *, unsigned int);
 void initialize(student *, unsigned int);
 void print_students(FILE *, student *, unsigned int, bool);

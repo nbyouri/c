@@ -45,11 +45,11 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
                 } else {
                     // break if the line is invalid, to avoid crashes
                     if (!isdigit(s[0])) break;
-                    class[*nb].num = atoi(strtok(s, ";"));
+                    class[*nb].num = (unsigned)atoi(strtok(s, ";"));
                     snprintf(class[*nb].name, MAX_CHAR, "%s", strtok(NULL, ";"));
-                    class[*nb].bd.day = atoi(strtok(NULL, ";"));
-                    class[*nb].bd.mon = atoi(strtok(NULL, ";"));
-                    class[*nb].bd.yea = atoi(strtok(NULL, ";"));
+                    class[*nb].bd.day = (unsigned)atoi(strtok(NULL, ";"));
+                    class[*nb].bd.mon = (unsigned)atoi(strtok(NULL, ";"));
+                    class[*nb].bd.yea = (unsigned)atoi(strtok(NULL, ";"));
                     (*nb)++;
                 }
             }
