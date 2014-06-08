@@ -40,7 +40,7 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
             error("Failed to read text file");
         } else {
             while (fgets(s, sizeof(s), f)) {
-                if ((class = grow(class, (*nb + 1))) == NULL) {
+                if ((class = grow(class, *nb)) == NULL) {
                     error("failed reallocation");
                 } else {
                     // break if the line is invalid, to avoid crashes
@@ -61,13 +61,15 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
             error("Failed to open binary file");
         } else {
             while (!feof(f)) {
-                if ((class = grow(class, (*nb + 1))) == NULL) {
+                if ((class = grow(class, *nb)) == NULL) {
                     error("failed to reallocate");
                 } else {
-                    fread(&class[(*nb)++], sizeof(student), 1, f);
-                    //(*nb)++;
+                    fread(&class[*nb], sizeof(student), 1, f);
+                    (*nb)++;
                 }
             }
+            // remove the last line, it's rubbish
+            (*nb)--;
             fclose(f);
         }
     } else {

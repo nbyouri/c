@@ -49,6 +49,3 @@ id_num * index_num(student * class, unsigned int nbs, unsigned int * nbi) {
     return id;
 }
 
-int sort_index_num(const void * a, const void * b) {
-    return (int)(((id_num *)a)->num - ((id_num *)b)->num);
-}

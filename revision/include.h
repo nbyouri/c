@@ -34,6 +34,7 @@ void initialize(student *, unsigned int);
 void print_students(FILE *, student *, unsigned int, bool);
 id_num * index_num(student *, unsigned int, unsigned int *);
 int sort_index_num(const void *, const void *);
+int sort_num(const void *, const void *);
 void search_num(student *, id_num *, unsigned int);
 void write_file(const char *, const char *, student *, unsigned int);
 void * read_file(const char *, const char *, student *, unsigned int *);

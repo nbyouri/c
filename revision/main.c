@@ -52,10 +52,13 @@ int main(void) {
     temp2 = read_file("temp.bin", "rb", temp2, &nbtemp2);
     if (temp2 == NULL)
         error("failed to load from binary file");
-    else
-        // show students and write to a text file
-        //print_students(stdout, temp2, nbtemp2, false);
+    else {
+        // print_students(stdout, temp2, nbtemp2, false);
+        // sort by number
+        qsort(temp2, nbtemp2, sizeof(student), sort_num);
+        // write to a text file
         write_file("temp.txt", "wt", temp2, nbtemp2);
+    }
     free(temp2);
     temp2 = NULL;
 

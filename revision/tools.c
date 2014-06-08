@@ -29,3 +29,11 @@ void error(const char * msg) {
     exit(EXIT_FAILURE);
 }
 
+int sort_index_num(const void * a, const void * b) {
+    return (int)(((id_num *)a)->num - ((id_num *)b)->num);
+}
+
+int sort_num(const void * a, const void * b) {
+    return (int)(((student *)a)->num - ((student *)b)->num);
+}
+
