@@ -1,17 +1,5 @@
 #include "include.h"
 
-student * grow(student * class, unsigned int nb) {
-    student * temp;
-    temp = (student *)realloc(class, (nb + 1) * sizeof(student));
-    if (temp == NULL) {
-        if (class != NULL)
-            free(class);
-        class = NULL;
-        return NULL;
-    }
-    return temp;
-}
-
 void initialize(student * class, unsigned int nb) {
     // random number
     class[nb].num = arc4random() % 100;

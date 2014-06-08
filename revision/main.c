@@ -30,7 +30,6 @@ int main(void) {
         // search through the students
         search_num(compsci, indexnum, nbindex);
     }
-
     // write students to files
     write_file("compsci.txt", "wt", compsci, nbstud);
     write_file("compsci.bin", "wb", compsci, nbstud);
@@ -43,7 +42,7 @@ int main(void) {
         error("failed to load data from file");
     } else {
         // show and write the data to a binary file
-        print_students(stdout, temp, nbtemp, false);
+        //print_students(stdout, temp, nbtemp, false);
         write_file("temp.bin", "wb", temp, nbtemp);
     }
     free(temp);
@@ -57,7 +56,7 @@ int main(void) {
         error("failed to load from binary file");
     } else {
         // show students and write to a text file
-        print_students(stdout, temp2, nbtemp2, false);
+        //print_students(stdout, temp2, nbtemp2, false);
         write_file("temp.txt", "wt", temp2, nbtemp2);
     }
     free(temp2);
@@ -73,6 +72,5 @@ int main(void) {
     }
     free(indexnum);
     indexnum = NULL;
-
     return 0;
 }

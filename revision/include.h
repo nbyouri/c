@@ -29,7 +29,7 @@ typedef struct {
 // function prototypes
 
 void error(const char *);
-student * grow(student *, unsigned int);
+void * grow(student *, unsigned int);
 void initialize(student *, unsigned int);
 void print_students(FILE *, student *, unsigned int, bool);
 id_num * index_num(student *, unsigned int, unsigned int *);
