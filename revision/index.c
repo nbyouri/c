@@ -1,6 +1,6 @@
 #include "include.h"
 
-id_num * index_num(student * class, unsigned int nbs, unsigned int * nbi) {
+void * index_num(student * class, unsigned int nbs, unsigned int * nbi) {
     id_num * id = malloc((nbs + 1) * sizeof(id_num));
     unsigned int i = 0;
     unsigned int j = 0;
