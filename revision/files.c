@@ -55,6 +55,7 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
             }
             fclose(f);
         }
+        // binary file
     } else if (!strncmp(mode, "rb", MAX_CHAR)) {
         if ((f = fopen(filename, mode)) == NULL) {
             error("Failed to open binary file");
@@ -63,12 +64,14 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
                 if ((class = grow(class, (*nb + 1))) == NULL) {
                     error("failed to reallocate");
                 } else {
-                    fread(&class[*nb], sizeof(student), 1, f);
-                    (*nb)++;
+                    fread(&class[(*nb)++], sizeof(student), 1, f);
+                    //(*nb)++;
                 }
             }
             fclose(f);
         }
+    } else {
+        error("invalid file read mode");
     }
     return class;
 }

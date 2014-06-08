@@ -17,11 +17,10 @@ void * grow(student * class, unsigned int nb) {
 void print_students(FILE * fi, student * class, unsigned int nb, bool one) {
     // print only one item at index 'nb' or nb items
     unsigned int i = 0;
-    for (i = one ? nb : 0; i < nb + one; i++) {
+    for (i = one ? nb : 0; i < nb + one; i++)
         fprintf(fi, "%02d;%s;%02d;%02d;%04d\n", 
                 class[i].num, class[i].name, 
                 class[i].bd.day, class[i].bd.mon, class[i].bd.yea);
-    }
 }
 
 // print an error message and exit

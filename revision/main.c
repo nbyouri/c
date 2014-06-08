@@ -26,10 +26,9 @@ int main(void) {
     if ((indexnum = index_num(compsci, nbstud, &nbindex)) == NULL)
         // if the indexation fails, we quit
         error("indexation failed\n");
-    else {
+    else
         // search through the students
         search_num(compsci, indexnum, nbindex);
-    }
     // write students to files
     write_file("compsci.txt", "wt", compsci, nbstud);
     write_file("compsci.bin", "wb", compsci, nbstud);
@@ -38,13 +37,12 @@ int main(void) {
     student * temp = NULL;
     unsigned int nbtemp = 0;
     temp = read_file("compsci.txt", "rt", temp, &nbtemp);
-    if (temp == NULL) {
+    if (temp == NULL)
         error("failed to load data from file");
-    } else {
+    else
         // show and write the data to a binary file
         //print_students(stdout, temp, nbtemp, false);
         write_file("temp.bin", "wb", temp, nbtemp);
-    }
     free(temp);
     temp = NULL;
 
@@ -52,13 +50,12 @@ int main(void) {
     student * temp2 = NULL;
     unsigned int nbtemp2 = 0;
     temp2 = read_file("temp.bin", "rb", temp2, &nbtemp2);
-    if (temp2 == NULL) {
+    if (temp2 == NULL)
         error("failed to load from binary file");
-    } else {
+    else
         // show students and write to a text file
         //print_students(stdout, temp2, nbtemp2, false);
         write_file("temp.txt", "wt", temp2, nbtemp2);
-    }
     free(temp2);
     temp2 = NULL;
 

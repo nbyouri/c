@@ -11,8 +11,7 @@ void search_num(student * class, id_num * id, unsigned int nbid) {
     } else {
         // otherwise, print the students matching the index key
         unsigned int i = 0;
-        for (i = 0; i < temp->nb; i++) {
+        for (i = 0; i < temp->nb; i++)
             print_students(stdout, class, temp->lst[i], true);
-        }
     }
 }
