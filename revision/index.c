@@ -22,20 +22,26 @@ id_num * index_num(student * class, unsigned int nbs, unsigned int * nbi) {
         if (found == -1) {
             // grow the index and add the new value
             id = (id_num *)realloc(id, (*nbi + 1) * sizeof(id_num));
-            id[*nbi].num = class[i].num;
-            id[*nbi].nb = 1;
-            // add the index of the student in the index list for index key
-            id[*nbi].lst = (unsigned int *)malloc(sizeof(int));
-            id[*nbi].lst[0] = i;
-            (*nbi)++;
+            if (id == NULL) {
+                error("failed reallocation");
+            } else {
+                id[*nbi].num = class[i].num;
+                id[*nbi].nb = 1;
+                // add the index of the student in the index list for index key
+                id[*nbi].lst = (unsigned int *)malloc(sizeof(int));
+                id[*nbi].lst[0] = i;
+                (*nbi)++;
+            }
         } else {
             // if found, just add the student in the index list
             id[found].lst = (unsigned int *)realloc(id[found].lst, 
                     (id[found].nb + 1) * sizeof(int));
-            if (id[found].lst == NULL)
+            if (id[found].lst == NULL) {
                 error("failed reallocation\n");
-            id[found].lst[id[found].nb] = i;
-            id[found].nb++;
+            } else {
+                id[found].lst[id[found].nb] = i;
+                id[found].nb++;
+            }
         }
     }
     // sort the index array

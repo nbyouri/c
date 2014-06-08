@@ -10,7 +10,7 @@ void write_file(const char * filename, const char * mode, student * class, unsig
             error("Failed to write text file");
             // otherwise, write data to it
         } else {
-            print_students(f, class, nb);
+            print_students(f, class, nb, false);
             // close the file
             fclose(f);
         }
@@ -21,7 +21,7 @@ void write_file(const char * filename, const char * mode, student * class, unsig
         if ((f = fopen(filename, mode)) == NULL) {
             error("Failed to write binary file\n");
         } else {
-            fwrite(class, nb, sizeof(student), f);
+            fwrite(class, sizeof(student), nb, f);
             fclose(f);
         }
     } else {
@@ -36,7 +36,6 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
     // text file
     if (!strncmp(mode, "rt", MAX_CHAR)) {
         char s[200];
-        char name[MAX_CHAR];
         if ((f = fopen(filename, mode)) == NULL) {
             error("Failed to read text file");
         } else {
@@ -44,6 +43,7 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
                 if ((class = grow(class, (*nb + 1))) == NULL) {
                     error("failed reallocation");
                 } else {
+                    // break if the line is invalid, to avoid crashes
                     if (!isdigit(s[0])) break;
                     class[*nb].num = atoi(strtok(s, ";"));
                     snprintf(class[*nb].name, MAX_CHAR, "%s", strtok(NULL, ";"));
@@ -59,7 +59,15 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
         if ((f = fopen(filename, mode)) == NULL) {
             error("Failed to open binary file");
         } else {
-            printf("ok\n");
+            while (!feof(f)) {
+                if ((class = grow(class, (*nb + 1))) == NULL) {
+                    error("failed to reallocate");
+                } else {
+                    fread(&class[*nb], sizeof(student), 1, f);
+                    (*nb)++;
+                }
+            }
+            fclose(f);
         }
     }
     return class;
