@@ -1,6 +1,10 @@
 #include "include.h"
 
 int main(void) {
+    // create a directory to store data
+    struct stat st = {0};
+    if (stat("data", &st) == -1)
+        mkdir("data", 0700);
     student * compsci = NULL;
     id_num * indexnum = NULL;
     unsigned int nbstud = 0;
