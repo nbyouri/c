@@ -35,7 +35,7 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
 
     // text file
     if (!strncmp(mode, "rt", MAX_CHAR)) {
-        char s[200];
+        char s[MAX_CHAR_BIG];
         if ((f = fopen(filename, mode)) == NULL) {
             error("Failed to read text file");
         } else {

@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 #define MAX_CHAR 20
+#define MAX_CHAR_BIG 40
 
 // structures
 
