@@ -7,7 +7,7 @@ void search_num(student * class, id_num * id, unsigned int nbid) {
     temp = bsearch(&key, id, nbid, sizeof(id_num), sort_index_num);
     if (temp == NULL) {
         // exit if bsearch fails
-        error("failed to bsearch\n");
+        puts("not found\n");
     } else {
         // otherwise, print the students matching the index key
         unsigned int i = 0;
