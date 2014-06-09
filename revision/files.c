@@ -44,7 +44,7 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
                     error("failed reallocation");
                 } else {
                     // break if the line is invalid, to avoid crashes
-                    if (!isdigit(s[0])) break;
+                    if (!isdigit((unsigned char)s[0])) break;
                     class[*nb].num = (unsigned)atoi(strtok(s, ";"));
                     snprintf(class[*nb].name, MAX_CHAR, "%s", strtok(NULL, ";"));
                     class[*nb].bd.day = (unsigned)atoi(strtok(NULL, ";"));

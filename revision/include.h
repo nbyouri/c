@@ -33,7 +33,7 @@ void error(const char *) __attribute__ ((noreturn));
 void * grow(student *, unsigned int);
 void initialize(student *, unsigned int);
 void print_students(FILE *, student *, unsigned int, bool);
-id_num * index_num(student *, unsigned int, unsigned int *);
+void * index_num(student *, unsigned int, unsigned int *);
 int sort_index_num(const void *, const void *);
 int sort_num(const void *, const void *);
 void search_num(student *, id_num *, unsigned int);
