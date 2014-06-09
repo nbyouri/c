@@ -19,13 +19,13 @@ void write_file(const char * filename, const char * mode, student * class, unsig
         // binary file
     } else if (!strncmp(mode, "wb", MAX_CHAR)) {
         if ((f = fopen(filename, mode)) == NULL) {
-            error("Failed to write binary file\n");
+            error("Failed to write binary file");
         } else {
             fwrite(class, sizeof(student), nb, f);
             fclose(f);
         }
     } else {
-        error("invalid file write mode\n");
+        error("invalid file write mode");
     }
 }
 

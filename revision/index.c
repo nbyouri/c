@@ -37,7 +37,7 @@ void * index_num(student * class, unsigned int nbs, unsigned int * nbi) {
             id[found].lst = (unsigned int *)realloc(id[found].lst, 
                     (id[found].nb + 1) * sizeof(int));
             if (id[found].lst == NULL) {
-                error("failed reallocation\n");
+                error("failed reallocation");
             } else {
                 id[found].lst[id[found].nb] = i;
                 id[found].nb++;

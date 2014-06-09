@@ -15,7 +15,7 @@ int main(void) {
     for (i = 0; i < 200; i++) {
         if ((compsci = grow(compsci, nbstud)) == NULL)
             // if reallocation fails, we quit
-            error("reallocation failed\n");
+            error("reallocation failed");
         else {
             // else, we initialize the student
             initialize(compsci, nbstud);
@@ -29,7 +29,7 @@ int main(void) {
     // create the index by number
     if ((indexnum = index_num(compsci, nbstud, &nbindex)) == NULL)
         // if the indexation fails, we quit
-        error("indexation failed\n");
+        error("indexation failed");
     else
         // search through the students
         search_num(compsci, indexnum, nbindex);
