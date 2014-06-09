@@ -3,6 +3,8 @@
 void write_file(const char * filename, const char * mode, student * class, unsigned int nb) {
     FILE *f;
 
+    chdir(DATA_DIR);
+
     // text file
     if (!strncmp(mode, "wt", MAX_CHAR)) {
         // quit if it fails to open
@@ -33,6 +35,8 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
     FILE *f;
     *nb = 0;
 
+    chdir(DATA_DIR);
+    
     // text file
     if (!strncmp(mode, "rt", MAX_CHAR)) {
         char s[MAX_CHAR_BIG];

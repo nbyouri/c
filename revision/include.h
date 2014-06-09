@@ -5,9 +5,13 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define MAX_CHAR 20
 #define MAX_CHAR_BIG 40
+#define DATA_DIR "data/"
 
 // structures
 
@@ -26,6 +30,8 @@ typedef struct {
     unsigned int nb;
     unsigned int *lst;
 } id_num;
+
+static struct stat st;
 
 // function prototypes
 
