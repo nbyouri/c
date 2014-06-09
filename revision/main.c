@@ -2,10 +2,8 @@
 
 int main(void) {
     // create a directory to store data and go there
-    if (stat(DATA_DIR, &st) == -1) {
+    if (stat(DATA_DIR, &st) == -1)
         mkdir(DATA_DIR, 0700);
-    }
-
 
     // variables
     student * compsci = NULL;
@@ -37,26 +35,26 @@ int main(void) {
         // search through the students
         search_num(compsci, indexnum, nbindex);
     // write students to files
-    write_file("compsci.txt", "wt", compsci, nbstud);
-    write_file("compsci.bin", "wb", compsci, nbstud);
+    write_file("class_compsci.txt", "wt", compsci, nbstud);
+    write_file("class_compsci.bin", "wb", compsci, nbstud);
 
     // load from text file
     student * temp = NULL;
     unsigned int nbtemp = 0;
-    temp = read_file("compsci.txt", "rt", temp, &nbtemp);
+    temp = read_file("class_compsci.txt", "rt", temp, &nbtemp);
     if (temp == NULL)
         error("failed to load data from file");
     else
         // show and write the data to a binary file
         //print_students(stdout, temp, nbtemp, false);
-        write_file("temp.bin", "wb", temp, nbtemp);
+        write_file("class_temp.bin", "wb", temp, nbtemp);
     free(temp);
     temp = NULL;
 
     // load from binary file
     student * temp2 = NULL;
     unsigned int nbtemp2 = 0;
-    temp2 = read_file("temp.bin", "rb", temp2, &nbtemp2);
+    temp2 = read_file("class_temp.bin", "rb", temp2, &nbtemp2);
     if (temp2 == NULL)
         error("failed to load from binary file");
     else {
@@ -64,7 +62,7 @@ int main(void) {
         // sort by number
         qsort(temp2, nbtemp2, sizeof(student), sort_num);
         // write to a text file
-        write_file("temp.txt", "wt", temp2, nbtemp2);
+        write_file("class_temp_sorted.txt", "wt", temp2, nbtemp2);
     }
     free(temp2);
     temp2 = NULL;
