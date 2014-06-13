@@ -11,3 +11,4 @@ class: ${OBJS}
 clean:
 	rm *.o
 	rm class
+	rm -r data

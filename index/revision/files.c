@@ -66,7 +66,7 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
         } else {
             // find the number of elements in the binary files and rewind it
             fseek(f, 0, SEEK_END);
-            *nb = ftell(f) / sizeof(student);
+            *nb = (unsigned)ftell(f) / sizeof(student);
             rewind(f);
             if ((class = grow(class, *nb)) == NULL)
                 error("failed to reallocate");
