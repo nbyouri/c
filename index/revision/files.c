@@ -64,16 +64,14 @@ void * read_file(const char * filename, const char * mode, student * class, unsi
         if ((f = fopen(filename, mode)) == NULL) {
             error("Failed to open binary file");
         } else {
-            while (!feof(f)) {
-                if ((class = grow(class, *nb)) == NULL) {
-                    error("failed to reallocate");
-                } else {
-                    fread(&class[*nb], sizeof(student), 1, f);
-                    (*nb)++;
-                }
-            }
-            // remove the last line, it's rubbish
-            (*nb)--;
+            // find the number of elements in the binary files and rewind it
+            fseek(f, 0, SEEK_END);
+            *nb = ftell(f) / sizeof(student);
+            rewind(f);
+            if ((class = grow(class, *nb)) == NULL)
+                error("failed to reallocate");
+            else
+                fread(class, sizeof(student), *nb, f);
             fclose(f);
         }
     } else {
