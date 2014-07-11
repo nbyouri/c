@@ -13,6 +13,6 @@ typedef struct Dlfile {
 } Dlfile;
 
 int quit(const char *);
-void help(void);
+void help(void) __attribute__((noreturn));
 void output_file(const char *, const char *, Dlfile *);
 Dlfile * download(const char *);

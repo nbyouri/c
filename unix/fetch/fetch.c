@@ -1,3 +1,11 @@
+/*
+ *
+ *
+ * Fetch : Youri Mouton 11 July 2014.
+ *
+ * Dependencies : libfetch, openssl, xmalloc
+ *
+ */ 
 #include "tools.h"
 
 Dlfile * download(const char * str_url) {
@@ -12,12 +20,10 @@ Dlfile * download(const char * str_url) {
     url = fetchParseURL(str_url);
 
     if (url == NULL || (f = fetchXGetURL(str_url, &st, "")) == NULL)
-        // XXX: return NULL instead of quitting 
-        quit("Failed to fetch");
+        fatal("Failed to fetch\n");
 
     if (st.size == -1)
-        // XXX
-        quit("Invalid file");
+        fatal("Invalid file\n");
 
     buf_len = (size_t)st.size;
     file = xmalloc(sizeof(Dlfile));
@@ -26,14 +32,11 @@ Dlfile * download(const char * str_url) {
     buf_fetched = 0;
 
     while (buf_fetched < buf_len) {
-        cur_fetched = fetchIO_read(f, file->buf + buf_fetched,
-                fetch_buffer);
+        cur_fetched = fetchIO_read(f, file->buf + buf_fetched, fetch_buffer);
         if (cur_fetched == 0)
-            // XXX
-            quit("truncated file");
+            fatal("truncated file\n");
         else if (cur_fetched == -1)
-            // XXX
-            quit("truncated file\n");
+            fatal("truncated file\n");
         buf_fetched += (size_t)cur_fetched;
     }
 
@@ -41,7 +44,7 @@ Dlfile * download(const char * str_url) {
     file->size = buf_len;
 
     if (file->buf[0] == '\0')
-        quit("empty download");
+        fatal("empty download\n");
 
     fetchIO_close(f);
 
@@ -55,7 +58,7 @@ void output_file(const char * name, const char * url, Dlfile * f) {
 
     if (f) {
         if ((fp = fopen(name, "w")) == NULL)
-            quit("failed to open file");
+            fatal("failed to open file\n");
 
         fwrite(f->buf, f->size, 1, fp);
 
@@ -68,12 +71,7 @@ void output_file(const char * name, const char * url, Dlfile * f) {
 }
 
 void help(void) {
-    quit("./fetch -s <url> -o <output file name>");
-}
-
-int quit(const char * msg) {
-    fprintf(stderr, "quit : %s\n", msg);
-    exit(EXIT_FAILURE);
+    fatal("./fetch -s <url> -o <output file name>");
 }
 
 int main(int argc, char **argv) {
@@ -86,13 +84,13 @@ int main(int argc, char **argv) {
         while ((c = getopt(argc, argv, "hs:o:")) != -1) {
             switch(c) {
                 case 's' : 
-                    url = strndup(optarg, BUFSIZ);
+                    url = xstrdup(optarg);
                     break;
                 case 'o' :
                     if (url == NULL)
                         help();
                     else
-                        file = strndup(optarg, BUFSIZ);
+                        file = xstrdup(optarg);
                     break;
                 case 'h':
                 default : 
