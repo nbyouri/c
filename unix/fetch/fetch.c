@@ -3,7 +3,7 @@
  *
  * Fetch : Youri Mouton 11 July 2014.
  *
- * Dependencies : libfetch, openssl, xmalloc
+ * Dependencies : libfetch, openssl, xmalloc, progressmeter
  *
  */ 
 #include "tools.h"
@@ -16,6 +16,8 @@ Dlfile * download(const char * str_url) {
     ssize_t     cur_fetched;
     size_t      fetch_buffer = 1024;
     struct url  *url;
+    char        *p;
+    off_t       statsize;
 
     url = fetchParseURL(str_url);
 
@@ -25,11 +27,19 @@ Dlfile * download(const char * str_url) {
     if (st.size == -1)
         fatal("Invalid file\n");
 
+    if ((p = strrchr(str_url, '/')) != NULL)
+        p++;
+    else
+        p = (char *)str_url;
+
     buf_len = (size_t)st.size;
     file = xmalloc(sizeof(Dlfile));
     file->buf = xmalloc(buf_len + 1);
 
     buf_fetched = 0;
+    statsize = 0;
+
+    start_progress_meter(p, buf_len, &statsize);
 
     while (buf_fetched < buf_len) {
         cur_fetched = fetchIO_read(f, file->buf + buf_fetched, fetch_buffer);
@@ -38,7 +48,10 @@ Dlfile * download(const char * str_url) {
         else if (cur_fetched == -1)
             fatal("truncated file\n");
         buf_fetched += (size_t)cur_fetched;
+        statsize += (size_t)cur_fetched;
     }
+
+    stop_progress_meter();
 
     file->buf[buf_len] = '\0';
     file->size = buf_len;

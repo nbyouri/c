@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <progressmeter.h>
 
 typedef struct Dlfile {
     char *buf;
