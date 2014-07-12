@@ -7,7 +7,7 @@
  *
  */ 
 
-#include "tools.h"
+#include "global.h"
 
 Dlfile * download(const char * str_url) {
     struct      url_stat st;
@@ -23,10 +23,10 @@ Dlfile * download(const char * str_url) {
     url = fetchParseURL(str_url);
 
     if (url == NULL || (f = fetchXGetURL(str_url, &st, "")) == NULL)
-        fatal("Failed to fetch\n");
+        quit("Failed to fetch\n");
 
     if (st.size == -1)
-        fatal("Invalid file\n");
+        quit("Invalid file\n");
 
     if ((p = strrchr(str_url, '/')) != NULL)
         p++;
@@ -45,9 +45,9 @@ Dlfile * download(const char * str_url) {
     while (buf_fetched < buf_len) {
         cur_fetched = fetchIO_read(f, file->buf + buf_fetched, fetch_buffer);
         if (cur_fetched == 0)
-            fatal("truncated file\n");
+            quit("truncated file\n");
         else if (cur_fetched == -1)
-            fatal("truncated file\n");
+            quit("truncated file\n");
         buf_fetched += (size_t)cur_fetched;
         statsize += (size_t)cur_fetched;
     }
@@ -58,7 +58,7 @@ Dlfile * download(const char * str_url) {
     file->size = buf_len;
 
     if (file->buf[0] == '\0')
-        fatal("empty download\n");
+        quit("empty download\n");
 
     fetchIO_close(f);
 
@@ -73,7 +73,7 @@ void output_file(const char * name, const char * url) {
 
     if (f) {
         if ((fp = fopen(name, "w")) == NULL)
-            fatal("failed to open file\n");
+            quit("failed to open file\n");
 
         fwrite(f->buf, f->size, 1, fp);
 
@@ -89,7 +89,7 @@ void output_file(const char * name, const char * url) {
 }
 
 void help(void) {
-    fatal("./fetch -s <url> -o <output file name>");
+    quit("./fetch -s <url> -o <output file name>");
 }
 
 int main(int argc, char **argv) {
