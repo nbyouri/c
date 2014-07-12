@@ -10,7 +10,7 @@
 
 // Rename libxmalloc's fatal to quit
 #define quit    fatal
-#define help    quit("./fetch -s <url> -o <output file name>")
+#define help    quit("./fetch -s <url> -o <output file name>\n")
 
 // Structure for files
 typedef struct Dlfile {
