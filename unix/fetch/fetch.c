@@ -88,10 +88,6 @@ void output_file(const char * name, const char * url) {
     f = NULL;
 }
 
-void help(void) {
-    quit("./fetch -s <url> -o <output file name>");
-}
-
 int main(int argc, char **argv) {
     char *url = NULL; 
     char *file = NULL;
@@ -105,19 +101,22 @@ int main(int argc, char **argv) {
                     break;
                 case 'o' :
                     if (url == NULL)
-                        help();
+                        help;
                     else
                         file = xstrdup(optarg);
                     break;
                 case 'h':
                 default : 
-                    help(); 
+                    help; 
             }
         }
     } else
-        help();
-
-    output_file(file, url);
+        help;
+    
+    if (file == NULL)
+        help;
+    else
+        output_file(file, url);
 
     free(url);
     url = NULL;
