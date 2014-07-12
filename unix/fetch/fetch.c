@@ -110,12 +110,13 @@ int main(int argc, char **argv) {
                     help(); 
             }
         }
-    } else {
+    } else
         help();
-    }
 
     output_file(file, url, ar);
 
+    free(ar);
+    ar = NULL;
     free(url);
     url = NULL;
     free(file);
