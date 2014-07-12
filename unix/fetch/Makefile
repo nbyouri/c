@@ -1,4 +1,5 @@
 CC=	cc 
+PREFIX=	/usr/pkg
 SRCS=	fetch.c 
 CFLAGS=	-Weverything -I/usr/pkg/include 
 LDFLAGS=-L/usr/pkg/lib -lfetch -lssl -lcrypto -lxmalloc -lprogressmeter
@@ -9,7 +10,10 @@ all:
 
 install:
 	test -d ${DESTDIR}${PREFIX}/bin || mkdir -p ${DESTDIR}${PREFIX}/bin
-	install -pm 755 fetch ${DESTDIR}${PREFIX}/bin
+	install -pm 755 ${TARGET} ${DESTDIR}${PREFIX}/bin/${TARGET}
+
+uninstall:
+	rm ${DESTDIR}${PREFIX}/bin/${TARGET}
 
 clean:
 	rm ${TARGET}
