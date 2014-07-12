@@ -1,7 +1,7 @@
 CC=	cc 
 PREFIX=	/usr/pkg
 SRCS=	fetch.c 
-CFLAGS=	-I/usr/pkg/include 
+CFLAGS=	-I/usr/pkg/include  -Wall
 LDFLAGS=-L/usr/pkg/lib -lfetch -lssl -lcrypto -lxmalloc -lprogressmeter
 TARGET=	fetch
 
