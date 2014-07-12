@@ -6,6 +6,7 @@
  * Dependencies : libfetch, openssl, xmalloc, progressmeter
  *
  */ 
+
 #include "tools.h"
 
 Dlfile * download(const char * str_url) {
@@ -64,8 +65,9 @@ Dlfile * download(const char * str_url) {
     return file;
 }
 
-void output_file(const char * name, const char * url, Dlfile * f) {
-    FILE *fp;
+void output_file(const char * name, const char * url) {
+    Dlfile      *f = NULL;
+    FILE        *fp;
 
     f = download(url);
 
@@ -81,6 +83,9 @@ void output_file(const char * name, const char * url, Dlfile * f) {
         free(f);
         f = NULL;
     }
+
+    free(f);
+    f = NULL;
 }
 
 void help(void) {
@@ -88,11 +93,10 @@ void help(void) {
 }
 
 int main(int argc, char **argv) {
-    Dlfile *ar = NULL;
     char *url = NULL; 
     char *file = NULL;
     int c;
-
+    
     if (argc >= 2) {
         while ((c = getopt(argc, argv, "hs:o:")) != -1) {
             switch(c) {
@@ -113,10 +117,8 @@ int main(int argc, char **argv) {
     } else
         help();
 
-    output_file(file, url, ar);
+    output_file(file, url);
 
-    free(ar);
-    ar = NULL;
     free(url);
     url = NULL;
     free(file);

@@ -15,5 +15,5 @@ typedef struct Dlfile {
 
 int quit(const char *);
 void help(void) __attribute__((noreturn));
-void output_file(const char *, const char *, Dlfile *);
+void output_file(const char *, const char *);
 Dlfile * download(const char *);
