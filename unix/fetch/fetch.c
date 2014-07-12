@@ -9,6 +9,9 @@
 
 #include "global.h"
 
+/*
+ * Download data.
+ */
 Dlfile * download(const char * str_url) {
     struct      url_stat st;
     fetchIO     *f = NULL;
@@ -65,6 +68,9 @@ Dlfile * download(const char * str_url) {
     return file;
 }
 
+/*
+ * Write downloaded data to a file.
+ */
 void output_file(const char * name, const char * url) {
     Dlfile      *f = NULL;
     FILE        *fp;
@@ -73,7 +79,7 @@ void output_file(const char * name, const char * url) {
 
     if (f) {
         if ((fp = fopen(name, "w")) == NULL)
-            quit("failed to open file\n");
+            quit("failed to open %s\n", name);
 
         fwrite(f->buf, f->size, 1, fp);
 
@@ -83,16 +89,26 @@ void output_file(const char * name, const char * url) {
         free(f);
         f = NULL;
     }
+}
 
-    free(f);
-    f = NULL;
+/*
+ * Check if file exists and if we have permission to write to it.
+ */ 
+void check_file(const char *file) {
+    if (access(file, W_OK) == -1)
+        quit("%s can't be written (permission denied).\n", file);
+    else {
+        if (access(file, F_OK) != -1)
+            quit("%s already exists.\n", file);
+    }
 }
 
 int main(int argc, char **argv) {
     char *url = NULL; 
     char *file = NULL;
     int c;
-    
+
+    // parse command line options
     if (argc >= 2) {
         while ((c = getopt(argc, argv, "hs:o:")) != -1) {
             switch(c) {
@@ -112,12 +128,16 @@ int main(int argc, char **argv) {
         }
     } else
         help;
-    
+
+    // make sure we specified a file to write to
     if (file == NULL)
         help;
-    else
+    else {
+        check_file(file);
         output_file(file, url);
+    }
 
+    // release memory
     free(url);
     url = NULL;
     free(file);

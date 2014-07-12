@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <progressmeter.h>
+#include <sys/stat.h>
+#include <errno.h>
 
 // Rename libxmalloc's fatal to quit
 #define quit    fatal
@@ -20,3 +22,4 @@ typedef struct Dlfile {
 
 void output_file(const char *, const char *);
 Dlfile * download(const char *);
+void check_file(const char *);
