@@ -10,6 +10,7 @@
 
 // Rename libxmalloc's fatal to quit
 #define quit    fatal
+#define help    quit("./fetch -s <url> -o <output file name>")
 
 // Structure for files
 typedef struct Dlfile {
@@ -17,6 +18,5 @@ typedef struct Dlfile {
     size_t size;
 } Dlfile;
 
-void help(void) __attribute__((noreturn));
 void output_file(const char *, const char *);
 Dlfile * download(const char *);
