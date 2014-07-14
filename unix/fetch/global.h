@@ -6,6 +6,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <sys/stat.h>
+#include <errno.h>
 #include <progressmeter.h>
 
 // Rename libxmalloc's fatal to quit

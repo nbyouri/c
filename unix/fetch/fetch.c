@@ -47,7 +47,7 @@ Dlfile * download(const char * str_url) {
 
     while (buf_fetched < buf_len) {
         cur_fetched = fetchIO_read(f, file->buf + buf_fetched, fetch_buffer);
-        if (cur_fetched == 0)
+        if (!cur_fetched)
             quit("truncated file\n");
         else if (cur_fetched == -1)
             quit("truncated file\n");
@@ -75,12 +75,16 @@ void output_file(const char * name, const char * url) {
     Dlfile      *f = NULL;
     FILE        *fp;
 
+    // check if we can open a file 
+    // and do it
+    check_file(name);
+    if ((fp = fopen(name, "w")) == NULL)
+        quit("failed to open %s\n", name);
+
     f = download(url);
 
     if (f) {
-        if ((fp = fopen(name, "w")) == NULL)
-            quit("failed to open %s\n", name);
-
+        // write the data 
         fwrite(f->buf, f->size, 1, fp);
 
         fclose(fp);
@@ -95,12 +99,10 @@ void output_file(const char * name, const char * url) {
  * Check if file exists and if we have permission to write to it.
  */ 
 void check_file(const char *file) {
-    if (access(file, W_OK) == -1)
-        quit("%s can't be written (permission denied).\n", file);
-    else {
-        if (access(file, F_OK) != -1)
-            quit("%s already exists.\n", file);
-    }
+    struct stat stat_buf;
+
+    if (!stat(file, &stat_buf))
+        quit("%s already exists\n", file);
 }
 
 int main(int argc, char **argv) {
@@ -132,10 +134,8 @@ int main(int argc, char **argv) {
     // make sure we specified a file to write to
     if (file == NULL)
         help;
-    else {
-        check_file(file);
+    else
         output_file(file, url);
-    }
 
     // release memory
     free(url);
