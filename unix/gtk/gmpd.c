@@ -7,9 +7,9 @@ static void
 mpd_com(GtkWidget * widget, gpointer data) {
     GError * error = NULL;
 
-    char *com = MPC_COM;
-    com = strndup(MPC_COM, BUFSIZ);
-    snprintf(com + strlen(com) + 1, BUFSIZ, "%s", data);
+    char com[BUFSIZ];
+    snprintf(com, BUFSIZ, "%s %s", MPC_COM, data);
+    printf("%s\n", com);
 
     if (!g_spawn_command_line_async((const char *)com, &error) && error) {
         fprintf(stderr, "%s\n", error->message);
