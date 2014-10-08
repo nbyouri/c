@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
                 printf("%s:\n", argv[i]);
                 while ((ep = readdir(dp)) != NULL) {
                     if (ep->d_name[0] != '.') {
-                        printf("%llu %s\n", ep->d_ino, ep->d_name);
+                        printf("%-12llu %-12s\n", ep->d_ino, ep->d_name);
                     }
                 }
                 puts("");
